@@ -1,45 +1,15 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { ChevronDown, Menu, X, Sun, Moon, Phone } from "lucide-react"
+import { Menu, X, Sun, Moon, Phone } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { useState } from "react"
 import { useTheme } from "@/components/ThemeProvider"
-
-const conditionPages = [
-  { href: "/auto-verkaufen-ohne-tuev", label: "Auto ohne TÜV verkaufen" },
-  { href: "/auto-verkaufen-mit-motorschaden", label: "Auto mit Motorschaden" },
-  { href: "/auto-verkaufen-unfallschaden", label: "Unfallwagen verkaufen" },
-  { href: "/auto-verkaufen-defektes-auto", label: "Defektes Auto verkaufen" },
-  { href: "/auto-verkaufen-bastlerfahrzeug", label: "Bastlerfahrzeug verkaufen" },
-  { href: "/auto-verkaufen-export", label: "Auto für Export verkaufen" },
-  { href: "/auto-verkaufen-sofort", label: "Auto sofort verkaufen" },
-]
-
-const cityPages = [
-  { href: "/autoankauf-nuernberg", label: "Nürnberg" },
-  { href: "/autoankauf-fuerth", label: "Fürth" },
-  { href: "/autoankauf-erlangen", label: "Erlangen" },
-  { href: "/autoankauf-ansbach", label: "Ansbach" },
-  { href: "/autoankauf-bamberg", label: "Bamberg" },
-  { href: "/autoankauf-bayreuth", label: "Bayreuth" },
-  { href: "/autoankauf-wuerzburg", label: "Würzburg" },
-  { href: "/autoankauf-regensburg", label: "Regensburg" },
-  { href: "/autoankauf-ingolstadt", label: "Ingolstadt" },
-  { href: "/autoankauf-schwabach", label: "Schwabach" },
-  { href: "/autoankauf-neumarkt", label: "Neumarkt" },
-  { href: "/autoankauf-hof", label: "Hof" },
-  { href: "/autoankauf-coburg", label: "Coburg" },
-  { href: "/autoankauf-amberg", label: "Amberg" },
-  { href: "/autoankauf-kulmbach", label: "Kulmbach" },
-  { href: "/autoankauf-kitzingen", label: "Kitzingen" },
-]
+import { navItems } from "@/lib/navItems"
 
 export default function MainHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [conditionDropdown, setConditionDropdown] = useState(false)
-  const [cityDropdown, setCityDropdown] = useState(false)
   const { theme, toggleTheme } = useTheme()
 
   const scrollToForm = () => {
@@ -98,59 +68,17 @@ export default function MainHeader() {
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation (same items as mobile) */}
             <nav className="hidden lg:flex items-center gap-1">
-              <Link href="/" className="px-4 py-2 hover:text-orange-600 transition">Startseite</Link>
-
-              {/* Condition Dropdown */}
-              <div
-                className="relative"
-                onMouseEnter={() => setConditionDropdown(true)}
-                onMouseLeave={() => setConditionDropdown(false)}
-              >
-                <button className="flex items-center gap-1 px-4 py-2 hover:text-orange-600 transition">
-                  Fahrzeugzustand
-                  <ChevronDown className="w-4 h-4" />
-                </button>
-                {conditionDropdown && (
-                  <div className="absolute top-full left-0 w-64 bg-white dark:bg-gray-800 shadow-lg rounded-lg py-2 border dark:border-gray-700 z-50">
-                    {conditionPages.map((page) => (
-                      <Link
-                        key={page.href}
-                        href={page.href}
-                        className="block px-4 py-2 hover:bg-orange-50 dark:hover:bg-gray-700 hover:text-orange-600 transition"
-                      >
-                        {page.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Cities Dropdown */}
-              <div
-                className="relative"
-                onMouseEnter={() => setCityDropdown(true)}
-                onMouseLeave={() => setCityDropdown(false)}
-              >
-                <button className="flex items-center gap-1 px-4 py-2 hover:text-orange-600 transition">
-                  Städte
-                  <ChevronDown className="w-4 h-4" />
-                </button>
-                {cityDropdown && (
-                  <div className="absolute top-full left-0 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-lg py-2 border dark:border-gray-700 z-50 max-h-80 overflow-y-auto">
-                    {cityPages.map((page) => (
-                      <Link
-                        key={page.href}
-                        href={page.href}
-                        className="block px-4 py-2 hover:bg-orange-50 dark:hover:bg-gray-700 hover:text-orange-600 transition"
-                      >
-                        Autoankauf {page.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="px-4 py-2 hover:text-orange-600 transition"
+                >
+                  {item.label}
+                </Link>
+              ))}
             </nav>
 
             <div className="flex items-center gap-2">
@@ -170,43 +98,24 @@ export default function MainHeader() {
           {/* Mobile Menu */}
           {mobileMenuOpen && (
             <nav className="lg:hidden mt-4 pb-4 border-t dark:border-gray-700 pt-4">
-              <Link href="/" className="block py-2 hover:text-orange-600" onClick={() => setMobileMenuOpen(false)}>
-                Startseite
-              </Link>
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="block py-2 hover:text-orange-600"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
 
-              <div className="py-2">
-                <p className="font-semibold text-orange-600 mb-2">Fahrzeugzustand</p>
-                <div className="pl-4 space-y-1">
-                  {conditionPages.map((page) => (
-                    <Link
-                      key={page.href}
-                      href={page.href}
-                      className="block py-1 text-sm hover:text-orange-600"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {page.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              <div className="py-2">
-                <p className="font-semibold text-orange-600 mb-2">Städte</p>
-                <div className="pl-4 grid grid-cols-2 gap-1">
-                  {cityPages.map((page) => (
-                    <Link
-                      key={page.href}
-                      href={page.href}
-                      className="block py-1 text-sm hover:text-orange-600"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {page.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              <Button onClick={() => { scrollToForm(); setMobileMenuOpen(false); }} className="w-full mt-4 bg-orange-600 hover:bg-orange-700">
+              <Button
+                onClick={() => {
+                  scrollToForm()
+                  setMobileMenuOpen(false)
+                }}
+                className="w-full mt-4 bg-orange-600 hover:bg-orange-700"
+              >
                 Jetzt Angebot erhalten
               </Button>
             </nav>

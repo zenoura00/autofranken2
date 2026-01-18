@@ -71,11 +71,3 @@ WEB3FORMS_ACCESS_KEY=YOUR_KEY_HERE
 
 - استخدم `npm run lint` للتأكد من TypeScript + ESLint.
 - استخدم `npm run format` لتنسيق الكود عبر Biome.
-# autofranken2
-# autofranken2
-# autofranken2
-# autofranken2
-# autofranken2
-# autofranken2
-# autofranken2
-# autofranken2

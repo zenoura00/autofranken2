@@ -10,6 +10,7 @@ import { useState, useRef } from "react"
 import Link from "next/link"
 import { useTheme } from "@/components/ThemeProvider"
 import { carBrands, generateYears, fuelTypes } from "@/data/carData"
+import { navItems } from "@/lib/navItems"
 
 // GA4 Event tracking helper
 declare global {
@@ -161,6 +162,13 @@ export default function Home() {
 
       const result = await response.json()
       if (result.success) {
+        // GA4 conversion event (single source of truth for lead tracking)
+        if (typeof window !== "undefined" && typeof (window as any).gtag === "function") {
+          ;(window as any).gtag("event", "lead_submit", {
+            event_category: "Lead",
+            event_label: window.location.pathname,
+          })
+        }
         setFormSubmitted(true)
       } else {
         alert("Fehler beim Senden. Bitte versuchen Sie es erneut oder rufen Sie uns an.")
@@ -231,44 +239,11 @@ export default function Home() {
               </div>
             </Link>
             <nav className="hidden lg:flex items-center gap-1">
-              <a href="#form" className="px-3 py-2 hover:text-orange-600 transition">Auto verkaufen</a>
-
-              {/* Fahrzeugzustand Dropdown */}
-              <div className="relative group">
-                <button className="flex items-center gap-1 px-3 py-2 hover:text-orange-600 transition">
-                  Fahrzeugzustand
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                </button>
-                <div className="absolute top-full left-0 w-64 bg-white dark:bg-gray-800 shadow-lg rounded-lg py-2 border dark:border-gray-700 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                  <Link href="/auto-verkaufen-ohne-tuev" className="block px-4 py-2 hover:bg-orange-50 dark:hover:bg-gray-700 hover:text-orange-600">Auto ohne TÜV verkaufen</Link>
-                  <Link href="/auto-verkaufen-mit-motorschaden" className="block px-4 py-2 hover:bg-orange-50 dark:hover:bg-gray-700 hover:text-orange-600">Auto mit Motorschaden</Link>
-                  <Link href="/auto-verkaufen-unfallschaden" className="block px-4 py-2 hover:bg-orange-50 dark:hover:bg-gray-700 hover:text-orange-600">Unfallwagen verkaufen</Link>
-                  <Link href="/auto-verkaufen-defektes-auto" className="block px-4 py-2 hover:bg-orange-50 dark:hover:bg-gray-700 hover:text-orange-600">Defektes Auto verkaufen</Link>
-                  <Link href="/auto-verkaufen-bastlerfahrzeug" className="block px-4 py-2 hover:bg-orange-50 dark:hover:bg-gray-700 hover:text-orange-600">Bastlerfahrzeug verkaufen</Link>
-                  <Link href="/auto-verkaufen-export" className="block px-4 py-2 hover:bg-orange-50 dark:hover:bg-gray-700 hover:text-orange-600">Auto für Export verkaufen</Link>
-                  <Link href="/auto-verkaufen-sofort" className="block px-4 py-2 hover:bg-orange-50 dark:hover:bg-gray-700 hover:text-orange-600">Auto sofort verkaufen</Link>
-                </div>
-              </div>
-
-              {/* Städte Dropdown */}
-              <div className="relative group">
-                <button className="flex items-center gap-1 px-3 py-2 hover:text-orange-600 transition">
-                  Städte
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                </button>
-                <div className="absolute top-full left-0 w-56 bg-white dark:bg-gray-800 shadow-lg rounded-lg py-2 border dark:border-gray-700 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all max-h-80 overflow-y-auto">
-                  <Link href="/autoankauf-nuernberg" className="block px-4 py-2 hover:bg-orange-50 dark:hover:bg-gray-700 hover:text-orange-600">Autoankauf Nürnberg</Link>
-                  <Link href="/autoankauf-fuerth" className="block px-4 py-2 hover:bg-orange-50 dark:hover:bg-gray-700 hover:text-orange-600">Autoankauf Fürth</Link>
-                  <Link href="/autoankauf-erlangen" className="block px-4 py-2 hover:bg-orange-50 dark:hover:bg-gray-700 hover:text-orange-600">Autoankauf Erlangen</Link>
-                  <Link href="/autoankauf-bamberg" className="block px-4 py-2 hover:bg-orange-50 dark:hover:bg-gray-700 hover:text-orange-600">Autoankauf Bamberg</Link>
-                  <Link href="/autoankauf-wuerzburg" className="block px-4 py-2 hover:bg-orange-50 dark:hover:bg-gray-700 hover:text-orange-600">Autoankauf Würzburg</Link>
-                  <Link href="/autoankauf-regensburg" className="block px-4 py-2 hover:bg-orange-50 dark:hover:bg-gray-700 hover:text-orange-600">Autoankauf Regensburg</Link>
-                  <Link href="/autoankauf-ingolstadt" className="block px-4 py-2 hover:bg-orange-50 dark:hover:bg-gray-700 hover:text-orange-600">Autoankauf Ingolstadt</Link>
-                  <Link href="/autoankauf-bayreuth" className="block px-4 py-2 hover:bg-orange-50 dark:hover:bg-gray-700 hover:text-orange-600">Autoankauf Bayreuth</Link>
-                  <Link href="/autoankauf-ansbach" className="block px-4 py-2 hover:bg-orange-50 dark:hover:bg-gray-700 hover:text-orange-600">Autoankauf Ansbach</Link>
-                  <Link href="/autoankauf-schwabach" className="block px-4 py-2 hover:bg-orange-50 dark:hover:bg-gray-700 hover:text-orange-600">Autoankauf Schwabach</Link>
-                </div>
-              </div>
+              {navItems.map((item) => (
+                <Link key={item.href} href={item.href} className="px-3 py-2 hover:text-orange-600 transition">
+                  {item.label}
+                </Link>
+              ))}
             </nav>
             <div className="flex items-center gap-2">
               <button onClick={toggleTheme} className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" aria-label="Toggle theme">
@@ -281,30 +256,16 @@ export default function Home() {
           </div>
           {mobileMenuOpen && (
             <nav className="lg:hidden mt-4 pb-4 border-t dark:border-gray-700 pt-4">
-              <a href="#form" className="block py-2 hover:text-orange-600" onClick={() => setMobileMenuOpen(false)}>Auto verkaufen</a>
-
-              <div className="py-2">
-                <p className="font-semibold text-orange-600 mb-2">Fahrzeugzustand</p>
-                <div className="pl-4 space-y-1">
-                  <Link href="/auto-verkaufen-ohne-tuev" className="block py-1 text-sm hover:text-orange-600">Auto ohne TÜV</Link>
-                  <Link href="/auto-verkaufen-mit-motorschaden" className="block py-1 text-sm hover:text-orange-600">Mit Motorschaden</Link>
-                  <Link href="/auto-verkaufen-unfallschaden" className="block py-1 text-sm hover:text-orange-600">Unfallwagen</Link>
-                  <Link href="/auto-verkaufen-defektes-auto" className="block py-1 text-sm hover:text-orange-600">Defektes Auto</Link>
-                  <Link href="/auto-verkaufen-sofort" className="block py-1 text-sm hover:text-orange-600">Sofort verkaufen</Link>
-                </div>
-              </div>
-
-              <div className="py-2">
-                <p className="font-semibold text-orange-600 mb-2">Städte</p>
-                <div className="pl-4 grid grid-cols-2 gap-1">
-                  <Link href="/autoankauf-nuernberg" className="py-1 text-sm hover:text-orange-600">Nürnberg</Link>
-                  <Link href="/autoankauf-fuerth" className="py-1 text-sm hover:text-orange-600">Fürth</Link>
-                  <Link href="/autoankauf-erlangen" className="py-1 text-sm hover:text-orange-600">Erlangen</Link>
-                  <Link href="/autoankauf-bamberg" className="py-1 text-sm hover:text-orange-600">Bamberg</Link>
-                  <Link href="/autoankauf-wuerzburg" className="py-1 text-sm hover:text-orange-600">Würzburg</Link>
-                  <Link href="/autoankauf-regensburg" className="py-1 text-sm hover:text-orange-600">Regensburg</Link>
-                </div>
-              </div>
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="block py-2 hover:text-orange-600"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
             </nav>
           )}
         </div>
@@ -364,6 +325,29 @@ export default function Home() {
       <section id="form" ref={formRef} className="py-16 bg-gray-50 dark:bg-gray-900 scroll-mt-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
+            {/* Trust Signals (helps conversion) */}
+            <div className="mb-8 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                <div className="flex items-center gap-2">
+                  <span aria-hidden>✔</span>
+                  <span>Kostenlose Abholung</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span aria-hidden>✔</span>
+                  <span>Barzahlung oder Überweisung</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span aria-hidden>✔</span>
+                  <span>Keine Verpflichtung</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span aria-hidden>✔</span>
+                  <span>Seriöser Autoankauf</span>
+                </div>
+              </div>
+              <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">🔒 Ihre Daten werden vertraulich behandelt.</p>
+            </div>
+
             <div className="flex justify-center gap-8 mb-8">
               <div className="text-center">
                 <div className={`${currentStep === 1 ? 'bg-orange-600' : 'bg-gray-400 dark:bg-gray-600'} text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2 font-bold transition-colors`}>1</div>

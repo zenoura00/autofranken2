@@ -1,0 +1,27 @@
+import { NextResponse } from "next/server"
+
+import { urlsetXml } from "@/lib/pseo/sitemapHelpers"
+import { cityOnlyPathsCore, getBaseUrl, getNowIso } from "@/lib/pseo/sitemapData"
+
+export const runtime = "nodejs"
+
+export function GET() {
+  const base = getBaseUrl()
+  const lastmod = getNowIso()
+
+  const entries = cityOnlyPathsCore().map((p) => ({
+    loc: base + p,
+    lastmod,
+    changefreq: "monthly",
+    priority: 0.6,
+  }))
+
+  const xml = urlsetXml(entries)
+
+  return new NextResponse(xml, {
+    headers: {
+      "Content-Type": "application/xml; charset=utf-8",
+      "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+    },
+  })
+}
