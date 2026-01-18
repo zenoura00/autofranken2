@@ -2,20 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-/**
- * ISR – رقم ثابت فقط
- */
 export const revalidate = 1209600; // 14 days
 
-// ✅ Next.js 15 expects params as a plain object
-type Props = {
-  params: {
-    slug: string;
-  };
+type PageProps = {
+  params: Promise<{ slug: string }>;
 };
 
-export function generateMetadata({ params }: Props): Metadata {
-  const { slug } = params;
+export async function generateMetadata(
+  props: PageProps
+): Promise<Metadata> {
+  const { slug } = await props.params;
 
   return {
     title: `Auto Ankauf ${slug} | Franken Auto Ankauf`,
@@ -23,16 +19,14 @@ export function generateMetadata({ params }: Props): Metadata {
   };
 }
 
-export default function Page({ params }: Props) {
-  const { slug } = params;
+export default async function Page(props: PageProps) {
+  const { slug } = await props.params;
 
   if (!slug) notFound();
 
   return (
     <main className="container mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-4">
-        Auto verkaufen in {slug}
-      </h1>
+      <h1 className="text-3xl font-bold mb-4">Auto verkaufen in {slug}</h1>
 
       <p className="mb-6 text-gray-700">
         Verkaufen Sie Ihr Auto schnell und sicher in {slug}. Kostenlose Bewertung,
