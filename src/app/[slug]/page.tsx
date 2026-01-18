@@ -1,24 +1,18 @@
-import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
-/**
- * ✅ IMPORTANT
- * revalidate MUST be a static number
- * NO math operations allowed
- */
+// ✅ رقم ثابت فقط
 export const revalidate = 1209600; // 14 days
 
 type PageProps = {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 };
 
 export async function generateMetadata(
   { params }: PageProps
 ): Promise<Metadata> {
-  const { slug } = params;
+  const { slug } = await params;
 
   return {
     title: `Auto Ankauf ${slug} | Franken Auto Ankauf`,
@@ -26,22 +20,18 @@ export async function generateMetadata(
   };
 }
 
-export default function Page({ params }: PageProps) {
-  const { slug } = params;
+export default async function Page({ params }: PageProps) {
+  const { slug } = await params;
 
-  if (!slug) {
-    notFound();
-  }
+  if (!slug) notFound();
 
   return (
     <main className="container mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-4">
-        Auto verkaufen in {slug}
-      </h1>
+      <h1 className="text-3xl font-bold mb-4">Auto verkaufen in {slug}</h1>
 
       <p className="mb-6 text-gray-700">
-        Verkaufen Sie Ihr Auto schnell und sicher in {slug}.
-        Kostenlose Bewertung, sofortiges Angebot und schnelle Abwicklung.
+        Verkaufen Sie Ihr Auto schnell und sicher in {slug}. Kostenlose Bewertung,
+        sofortiges Angebot und schnelle Abwicklung.
       </p>
 
       <Link
