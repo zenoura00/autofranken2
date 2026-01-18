@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import Link from "next/link"
+
 
 import SEOPageTemplate from '@/components/SEOPageTemplate'
 import { Shield, Settings, Car, Clock, Banknote } from 'lucide-react'
@@ -43,7 +45,7 @@ export default function CaseGeneralPage({ params }: { params: Params }) {
         <div className="max-w-lg text-center">
           <h1 className="text-3xl font-bold mb-3">Seite nicht gefunden</h1>
           <p className="text-gray-600 dark:text-gray-300">Bitte prüfen Sie die URL.</p>
-          <p className="mt-4"><a className="text-orange-600 underline" href="/">Zur Startseite</a></p>
+          <p className="mt-4"><Link className="text-orange-600 underline" href="/">Zur Startseite</Link></p>
         </div>
       </div>
     )

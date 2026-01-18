@@ -3,6 +3,8 @@ import type { Case } from "@/lib/seo/cases"
 
 type FAQ = { question: string; answer: string }
 
+type JsonLdObject = Record<string, unknown>
+
 function siteUrl(): string {
   return (process.env.NEXT_PUBLIC_SITE_URL ?? "https://frankenautoankauf.de").replace(/\/$/, "")
 }
@@ -27,10 +29,14 @@ export function buildJsonLd(opts: {
   const { pathname, title, description, city, caze, faqs = [] } = opts
   const url = pageUrl(pathname)
 
-  const localBusiness: Record<string, any> = {
+  const localBusinessId = idFor(pathname, "localbusiness")
+  const serviceId = idFor(pathname, "service")
+  const breadcrumbId = idFor(pathname, "breadcrumb")
+
+  const localBusiness: JsonLdObject = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "@id": idFor(pathname, "localbusiness"),
+    "@id": localBusinessId,
     name: "Franken Auto Ankauf",
     url: siteUrl(),
     telephone: "+49 176 32333561",
@@ -39,22 +45,22 @@ export function buildJsonLd(opts: {
     image: [pageUrl("/favicon.ico")],
   }
 
-  const service: Record<string, any> = {
+  const service: JsonLdObject = {
     "@context": "https://schema.org",
     "@type": "Service",
-    "@id": idFor(pathname, "service"),
+    "@id": serviceId,
     name: title,
     description,
-    provider: { "@id": localBusiness["@id"] },
+    provider: { "@id": localBusinessId },
     areaServed: city?.name ? city.name : "Franken",
     serviceType: "Autoankauf",
     url,
   }
 
-  const breadcrumb: Record<string, any> = {
+  const breadcrumb: JsonLdObject = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    "@id": idFor(pathname, "breadcrumb"),
+    "@id": breadcrumbId,
     itemListElement: [
       {
         "@type": "ListItem",
@@ -91,7 +97,7 @@ export function buildJsonLd(opts: {
     ],
   }
 
-  const faqPage: Record<string, any> | null = faqs.length
+  const faqPage: JsonLdObject | null = faqs.length
     ? {
         "@context": "https://schema.org",
         "@type": "FAQPage",

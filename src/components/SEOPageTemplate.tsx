@@ -28,7 +28,7 @@ interface SEOPageProps {
   ctaSubtitle: string
   relatedLinks?: { href: string; label: string }[]
   /** Optional JSON-LD structured data objects to embed on the page */
-  jsonLd?: Record<string, any> | Array<Record<string, any>>
+  jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>
 }
 
 export default function SEOPageTemplate({
@@ -57,13 +57,11 @@ export default function SEOPageTemplate({
       {jsonLd ? (
         <script
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       ) : (
         <script
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",

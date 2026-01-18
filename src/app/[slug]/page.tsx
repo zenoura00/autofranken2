@@ -11,7 +11,7 @@ import { buildJsonLd } from "@/lib/seo/schema"
 
 // On-demand generation for the long tail. Pages are cached (ISR) after first request.
 export const dynamicParams = true
-export const revalidate = 60 * 60 * 24 * 14 // 14 days
+export const revalidate = 1209600 // 14 days
 
 export async function generateStaticParams() {
   // We pre-render:

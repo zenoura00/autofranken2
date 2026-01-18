@@ -163,8 +163,10 @@ export default function Home() {
       const result = await response.json()
       if (result.success) {
         // GA4 conversion event (single source of truth for lead tracking)
-        if (typeof window !== "undefined" && typeof (window as any).gtag === "function") {
-          ;(window as any).gtag("event", "lead_submit", {
+        type GtagFn = (command: "event", eventName: string, params?: Record<string, unknown>) => void
+        const gtag = typeof window !== "undefined" ? (window as unknown as { gtag?: GtagFn }).gtag : undefined
+        if (typeof gtag === "function") {
+          gtag("event", "lead_submit", {
             event_category: "Lead",
             event_label: window.location.pathname,
           })

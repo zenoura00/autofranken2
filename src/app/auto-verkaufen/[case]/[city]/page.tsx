@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import Link from "next/link"
+
 
 import SEOPageTemplate from '@/components/SEOPageTemplate'
 import { Banknote, Clock, Shield, Settings, Car } from 'lucide-react'
@@ -53,7 +55,7 @@ export default function CaseCityPage({ params }: { params: Params }) {
             Bitte prüfen Sie die URL. Diese Seite wurde nicht erzeugt.
           </p>
           <p className="mt-4">
-            <a className="text-orange-600 underline" href="/">Zur Startseite</a>
+            <Link className="text-orange-600 underline" href="/">Zur Startseite</Link>
           </p>
         </div>
       </div>

@@ -18,8 +18,10 @@ export default function MainHeader() {
 
   const handleLogoClick = () => {
     // GA4 event: logo click leading to the central form
-    if (typeof window !== "undefined" && typeof (window as any).gtag === "function") {
-      ;(window as any).gtag("event", "logo_click_to_form", {
+    type GtagFn = (command: "event", eventName: string, params?: Record<string, unknown>) => void
+    const gtag = typeof window !== "undefined" ? (window as unknown as { gtag?: GtagFn }).gtag : undefined
+    if (typeof gtag === "function") {
+      gtag("event", "logo_click_to_form", {
         event_category: "engagement",
         event_label: "header_logo",
       })
