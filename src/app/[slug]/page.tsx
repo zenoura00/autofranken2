@@ -1,7 +1,12 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import Link from "next/link";
 
-// ✅ revalidate رقم ثابت فقط (ممنوع أي عمليات حسابية)
+/**
+ * ✅ IMPORTANT
+ * revalidate MUST be a static number
+ * NO math operations allowed
+ */
 export const revalidate = 1209600; // 14 days
 
 type PageProps = {
@@ -10,9 +15,6 @@ type PageProps = {
   };
 };
 
-/**
- * (اختياري) SEO Metadata
- */
 export async function generateMetadata(
   { params }: PageProps
 ): Promise<Metadata> {
@@ -27,7 +29,6 @@ export async function generateMetadata(
 export default function Page({ params }: PageProps) {
   const { slug } = params;
 
-  // حماية بسيطة
   if (!slug) {
     notFound();
   }
@@ -43,12 +44,12 @@ export default function Page({ params }: PageProps) {
         Kostenlose Bewertung, sofortiges Angebot und schnelle Abwicklung.
       </p>
 
-      <a
+      <Link
         href="/"
         className="inline-block bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition"
       >
         Jetzt Auto verkaufen
-      </a>
+      </Link>
     </main>
   );
 }
