@@ -11,17 +11,12 @@ import { generatePSEOPage, isPSEOCaseKey, isPSEOCityKey } from '@/lib/pseo/pseoG
 
 type Params = { case: string; city: string }
 
-export async function generateStaticParams(): Promise<Params[]> {
-  const cases = Object.keys(pseoCases) as PSEOCaseKey[]
-  const cities = Object.keys(pseoCities) as PSEOCityKey[]
-  const out: Params[] = []
-  for (const c of cases) {
-    for (const city of cities) {
-      out.push({ case: c, city })
-    }
-  }
-  return out
-}
+// IMPORTANT:
+// This route has a very large number of combinations (case × city).
+// Building all of them statically can exceed Vercel's deployment output limits.
+// We render on-demand and cache via revalidate.
+export const dynamic = 'force-dynamic'
+export const revalidate = 60 * 60 * 24 * 14 // 14 days
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   if (!isPSEOCaseKey(params.case) || !isPSEOCityKey(params.city)) {
