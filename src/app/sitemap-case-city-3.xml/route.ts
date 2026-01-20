@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 
-import { urlsetXml } from "@/lib/pseo/sitemapHelpers"
+import { urlsetXml, type UrlEntry } from "@/lib/pseo/sitemapHelpers"
 import { caseCityPathsAll, getBaseUrl, getNowIso } from "@/lib/pseo/sitemapData"
 
 export const runtime = "nodejs"
@@ -11,7 +11,7 @@ export function GET() {
   const all = caseCityPathsAll()
   const slice = all.slice(10000, all.length)
 
-  const entries = slice.map((p) => ({
+  const entries: UrlEntry[] = slice.map((p) => ({
     loc: base + p,
     lastmod,
     changefreq: "monthly",

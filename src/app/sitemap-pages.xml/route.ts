@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 
-import { urlsetXml } from "@/lib/pseo/sitemapHelpers"
+import { urlsetXml, type UrlEntry } from "@/lib/pseo/sitemapHelpers"
 import { getBaseUrl, getNowIso, staticPagePaths } from "@/lib/pseo/sitemapData"
 
 export const runtime = "nodejs"
@@ -12,7 +12,7 @@ export function GET() {
   const weekly = new Set(["/", "/auto-verkaufen", "/auto-verkaufen-sofort"])
   const high = new Set(["/auto-verkaufen", "/auto-verkaufen-sofort"])
 
-  const entries = staticPagePaths().map((path) => {
+  const entries: UrlEntry[] = staticPagePaths().map((path) => {
     const loc = path == "/" ? base : base + path
     const changefreq = weekly.has(path) ? "weekly" : "monthly"
     const priority = path == "/" ? 1 : high.has(path) ? 0.8 : 0.6

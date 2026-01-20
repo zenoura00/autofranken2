@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 
-import { urlsetXml } from "@/lib/pseo/sitemapHelpers"
+import { urlsetXml, type UrlEntry } from "@/lib/pseo/sitemapHelpers"
 import { getBaseUrl, getNowIso, intentCityPathsCore } from "@/lib/pseo/sitemapData"
 
 export const runtime = "nodejs"
@@ -10,7 +10,7 @@ export function GET() {
   const lastmod = getNowIso()
 
   const core = ["/auto-verkaufen-heute", "/auto-verkaufen-sofort"]
-  const entries = [
+  const entries: UrlEntry[] = [
     ...core.map((p) => ({
       loc: base + p,
       lastmod,
