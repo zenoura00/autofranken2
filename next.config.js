@@ -1,10 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // ✅ السماح بالنشر حتى لو وُجدت أخطاء ESLint
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-
   // ✅ السماح بالنشر حتى لو وُجدت أخطاء TypeScript
   typescript: {
     ignoreBuildErrors: true,

@@ -11,12 +11,45 @@ import { generatePSEOPage, isPSEOCaseKey, isPSEOCityKey } from '@/lib/pseo/pseoG
 
 type Params = { case: string; city: string }
 
+// With ~11k (case, city) combinations, fully pre-rendering everything can exceed
+// Vercel's deployment payload limits. We therefore pre-render only the most
+// important combinations and let the rest generate on-demand (ISR).
+export const revalidate = 1209600 // 14 days
+export const dynamicParams = true
+
 export async function generateStaticParams(): Promise<Params[]> {
-  const cases = Object.keys(pseoCases) as PSEOCaseKey[]
-  const cities = Object.keys(pseoCities) as PSEOCityKey[]
+  // Keep this list small (e.g. 25–200 pages) to avoid huge build outputs.
+  const topCities: PSEOCityKey[] = [
+    'nuernberg',
+    'erlangen',
+    'fuerth',
+    'wuerzburg',
+    'bamberg',
+    'bayreuth',
+    'ansbach',
+    'regensburg',
+    'ingolstadt',
+    'schwabach'
+  ]
+
+  const topCases: PSEOCaseKey[] = [
+    'motorschaden',
+    'ohne-tuev',
+    'unfallwagen',
+    'unfallschaden',
+    'altes-auto',
+    'bastlerfahrzeug',
+    'getriebeschaden',
+    'turboschaden',
+    'hohe-laufleistung',
+    'exportfahrzeug'
+  ]
+
   const out: Params[] = []
-  for (const c of cases) {
-    for (const city of cities) {
+  for (const c of topCases) {
+    if (!isPSEOCaseKey(c)) continue
+    for (const city of topCities) {
+      if (!isPSEOCityKey(city)) continue
       out.push({ case: c, city })
     }
   }
