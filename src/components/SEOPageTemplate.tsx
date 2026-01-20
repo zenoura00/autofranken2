@@ -225,8 +225,8 @@ export default function SEOPageTemplate({
             >
               Jetzt Angebot erhalten
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10 text-lg px-8">
-              <a href="tel:+4917632333561" aria-label="Jetzt anrufen">
+            <Button asChild size="lg" variant="outline" className="border-white bg-transparent text-white hover:bg-white/10 hover:text-white text-lg px-8">
+              <a href="tel:+4917632333561" aria-label="Jetzt anrufen" className="inline-flex items-center justify-center">
                 <Phone className="w-5 h-5 mr-2" />
                 Jetzt anrufen
               </a>

@@ -219,38 +219,10 @@ export default function Home() {
       <header className="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-50 border-b dark:border-gray-800">
         <div className="container mx-auto py-4 px-4">
           <div className="flex justify-between items-center">
-            <Link href="/" className="flex items-center">
+            <Link href="/#form" className="flex items-center" onClick={() => { setLeadSource("home_header_logo"); trackEvent("logo_click_to_form", { click_source: "home_header_logo" }); }}>
               {/* Franken Auto Ankauf Logo - Exact replica */}
               <div className="bg-[#2d333b] rounded-lg p-2 md:p-3">
-                <svg viewBox="0 0 160 100" className="w-28 h-16 md:w-36 md:h-20">
-                  {/* Car silhouette - sleek sports car outline */}
-                  <path
-                    d="M15 45 Q20 30 45 25 Q70 20 100 22 Q130 24 145 35 Q150 40 150 45 L150 50 Q145 52 140 50 L130 50 Q125 55 115 55 Q105 55 100 50 L60 50 Q55 55 45 55 Q35 55 30 50 L20 50 Q15 52 10 50 L10 45 Z"
-                    fill="none"
-                    stroke="#9CA3AF"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                  {/* Car window */}
-                  <path
-                    d="M50 45 Q55 35 75 32 Q95 30 110 35 Q115 38 115 45"
-                    fill="none"
-                    stroke="#9CA3AF"
-                    strokeWidth="1.5"
-                  />
-                  {/* Handshake icon inside car */}
-                  <g transform="translate(65, 36) scale(0.4)">
-                    <path d="M10 25 L25 15 L35 20 L45 15 L55 25 L45 30 L35 25 L25 30 Z" fill="#6B7280" stroke="#9CA3AF" strokeWidth="1"/>
-                    <circle cx="20" cy="20" r="5" fill="none" stroke="#9CA3AF" strokeWidth="1"/>
-                    <circle cx="45" cy="20" r="5" fill="none" stroke="#9CA3AF" strokeWidth="1"/>
-                  </g>
-                  {/* Franken text */}
-                  <text x="80" y="72" textAnchor="middle" fontSize="22" fontWeight="600" fill="#f97316" fontFamily="system-ui, sans-serif">Franken</text>
-                  {/* auto ankauf text */}
-                  <text x="80" y="88" textAnchor="middle" fontSize="11" fill="#6B7280" fontFamily="system-ui, sans-serif" letterSpacing="3">auto ankauf</text>
-                  {/* Orange underline */}
-                  <line x1="45" y1="93" x2="115" y2="93" stroke="#f97316" strokeWidth="1.5"/>
-                </svg>
+                <img src="/brand/logo-main.webp" alt="Franken Auto Ankauf" className="w-28 h-16 md:w-36 md:h-20 object-contain" />
               </div>
             </Link>
             <nav className="hidden lg:flex items-center gap-1">
