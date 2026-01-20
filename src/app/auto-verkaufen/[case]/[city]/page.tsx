@@ -3,20 +3,15 @@ import Link from "next/link"
 import SEOPageTemplate from '@/components/SEOPageTemplate'
 import { Banknote, Clock, Shield, Settings, Car } from 'lucide-react'
 
+import { caseKeys, cityKeysCore } from "@/lib/pseo/sitemapData"
 import { pseoCases, type PSEOCaseKey } from '@/lib/pseo/pseoCases'
 import { pseoCities, type PSEOCityKey } from '@/lib/pseo/pseoCities'
 import { generatePSEOPage, isPSEOCaseKey, isPSEOCityKey } from '@/lib/pseo/pseoGenerator'
 
-// Do NOT pre-render ~11k pages during build (Vercel output limit).
-// Generate on-demand and revalidate (ISR) instead.
-export const dynamicParams = true;
-export const revalidate = 1209600; // 14 days
-
-export async function generateStaticParams() {
-  // Intentionally return no params so the build stays small.
-  // Pages are generated on-demand and cached (ISR).
-  return [];
-}
+// IMPORTANT (Vercel deploy size): Do NOT prerender thousands of (case,city) pages at build time.
+// Render on-demand and cache with ISR.
+export const dynamic = 'force-dynamic'
+export const revalidate = 1209600 // 14 days
 
 type Params = { case: string; city: string }
 
