@@ -35,7 +35,8 @@ export async function GET(req: NextRequest) {
 
   try {
     while (true) {
-      const res = await list({ prefix: PREFIX, cursor, limit: 1000 })
+      // Explicitly type the response to satisfy strict TypeScript settings in production builds.
+      const res: Awaited<ReturnType<typeof list>> = await list({ prefix: PREFIX, cursor, limit: 1000 })
       cursor = res.cursor ?? undefined
 
       for (const b of res.blobs) {
