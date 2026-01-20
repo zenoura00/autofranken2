@@ -14,9 +14,15 @@ type Params = { case: string; city: string }
 // IMPORTANT:
 // This route has a very large number of combinations (case × city).
 // Building all of them statically can exceed Vercel's deployment output limits.
-// We render on-demand and cache via revalidate.
-export const dynamic = 'force-dynamic'
+// We therefore do NOT pre-render any params at build time.
+// Instead, pages are generated on first request and then cached via ISR.
+export const dynamicParams = true
 export const revalidate = 60 * 60 * 24 * 14 // 14 days
+
+// Do not prebuild any case×city pages during the build.
+export async function generateStaticParams() {
+  return [] as Array<{ case: string; city: string }>
+}
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   if (!isPSEOCaseKey(params.case) || !isPSEOCityKey(params.city)) {
