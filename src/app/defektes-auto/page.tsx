@@ -28,7 +28,7 @@ export default function DefektesAutoPage() {
           <Button
             size="lg"
             onClick={scrollToForm}
-            className="bg-white text-orange-600 hover:bg-gray-100 hover:scale-105 transition-transform"
+            className="bg-orange-600 text-white hover:bg-orange-700 hover:scale-105 transition-transform"
           >
             Jetzt Angebot erhalten
           </Button>

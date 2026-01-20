@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Check, Phone, Mail, ChevronDown, ChevronUp, MapPin, Clock, Shield, Car, Banknote, FileCheck } from "lucide-react"
 import Link from "next/link"
+import MainHeader from "@/components/MainHeader"
 import { useState } from "react"
 import { setLeadSource, gtagEvent } from "@/lib/leadTracking"
 
@@ -79,32 +80,7 @@ export default function SEOPageTemplate({
           }}
         />
       )}
-      {/* Header */}
-      <header className="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-50 border-b dark:border-gray-800">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            <Link href="/" className="flex items-center">
-              <div className="bg-[#2d333b] rounded-lg p-2">
-                <svg viewBox="0 0 160 100" className="w-28 h-16">
-                  <path d="M15 45 Q20 30 45 25 Q70 20 100 22 Q130 24 145 35 Q150 40 150 45 L150 50 Q145 52 140 50 L130 50 Q125 55 115 55 Q105 55 100 50 L60 50 Q55 55 45 55 Q35 55 30 50 L20 50 Q15 52 10 50 L10 45 Z" fill="none" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round"/>
-                  <path d="M50 45 Q55 35 75 32 Q95 30 110 35 Q115 38 115 45" fill="none" stroke="#9CA3AF" strokeWidth="1.5"/>
-                  <text x="80" y="72" textAnchor="middle" fontSize="22" fontWeight="600" fill="#f97316" fontFamily="system-ui, sans-serif">Franken</text>
-                  <text x="80" y="88" textAnchor="middle" fontSize="11" fill="#6B7280" fontFamily="system-ui, sans-serif" letterSpacing="3">auto ankauf</text>
-                  <line x1="45" y1="93" x2="115" y2="93" stroke="#f97316" strokeWidth="1.5"/>
-                </svg>
-              </div>
-            </Link>
-            <nav className="hidden md:flex gap-6">
-              <Link href="/" className="hover:text-orange-600 transition">Startseite</Link>
-              <Link href="/auto-verkaufen-sofort" className="hover:text-orange-600 transition">Sofort verkaufen</Link>
-              <Link href="/autoankauf-nuernberg" className="hover:text-orange-600 transition">Nürnberg</Link>
-            </nav>
-            <Button onClick={() => goToForm("header_cta")} className="bg-orange-600 hover:bg-orange-700">
-              Jetzt verkaufen
-            </Button>
-          </div>
-        </div>
-      </header>
+      <MainHeader />
 
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-orange-600 to-orange-500 text-white py-16 md:py-24">
@@ -119,8 +95,8 @@ export default function SEOPageTemplate({
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              onClick={() => goToForm("hero_cta")}
-              className="bg-white text-orange-600 hover:bg-gray-100 hover:scale-105 transition-all text-lg px-8"
+              onClick={() => goToForm("cta_cta")}
+              className="bg-orange-600 text-white hover:bg-orange-700 hover:scale-105 transition-all text-lg px-8"
             >
               Kostenlose Bewertung
             </Button>
@@ -244,8 +220,8 @@ export default function SEOPageTemplate({
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              onClick={() => goToForm("hero_cta")}
-              className="bg-white text-orange-600 hover:bg-gray-100 text-lg px-8"
+              onClick={() => goToForm("cta_cta")}
+              className="bg-orange-600 text-white hover:bg-orange-700 text-lg px-8"
             >
               Jetzt Angebot erhalten
             </Button>
