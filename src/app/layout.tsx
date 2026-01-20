@@ -157,15 +157,19 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
         {/* Google tag (gtag.js) */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-YGLT1K9TFD"></script>
-        <script>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-YGLT1K9TFD"
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
           {`
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-YGLT1K9TFD');
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-YGLT1K9TFD');
           `}
-        </script>
+        </Script>
 
         {/* Structured Data */}
         <script

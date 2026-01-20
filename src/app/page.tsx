@@ -11,6 +11,7 @@ import Link from "next/link"
 import { useTheme } from "@/components/ThemeProvider"
 import { carBrands, generateYears, fuelTypes } from "@/data/carData"
 import { navItems } from "@/lib/navItems"
+import { setLeadSource, getLeadSource, clearLeadSource, gtagEvent } from "@/lib/leadTracking"
 
 // GA4 Event tracking helper
 declare global {
@@ -20,12 +21,7 @@ declare global {
 }
 
 const trackEvent = (eventName: string, params?: Record<string, string>) => {
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('event', eventName, {
-      ...params,
-      page_path: window.location.pathname
-    })
-  }
+  gtagEvent(eventName, params)
 }
 
 export default function Home() {
@@ -150,6 +146,22 @@ export default function Home() {
       payload.append('message', formData.message)
       payload.append('wantUpload', formData.wantUpload)
 
+      // Lead/source tracking fields (for GA4 + Google Sheet)
+      const leadSource = getLeadSource()
+      const referrer = typeof document !== 'undefined' ? document.referrer : ''
+      const deviceType = typeof window !== 'undefined' ? (window.innerWidth < 768 ? 'mobile' : 'desktop') : 'unknown'
+
+      payload.append('page_url', typeof window !== 'undefined' ? window.location.href : '')
+      payload.append('page_path', typeof window !== 'undefined' ? window.location.pathname : '')
+      payload.append('referrer', referrer)
+      payload.append('device_type', deviceType)
+      payload.append('timestamp', new Date().toISOString())
+      payload.append('lead_source_url', leadSource?.source_url || '')
+      payload.append('lead_source_path', leadSource?.source_path || '')
+      payload.append('click_source', leadSource?.click_source || '')
+
+      // keep source for next submit? clear after successful submission
+
       // Images (up to 5)
       selectedImages.slice(0, 5).forEach(file => {
         payload.append('images', file)
@@ -171,6 +183,7 @@ export default function Home() {
             event_label: window.location.pathname,
           })
         }
+        clearLeadSource()
         setFormSubmitted(true)
       } else {
         alert("Fehler beim Senden. Bitte versuchen Sie es erneut oder rufen Sie uns an.")
@@ -620,22 +633,32 @@ export default function Home() {
           <h2 className="text-3xl font-bold text-center mb-8">Unsere Ankäufe</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              "/ankaeufe/ankauf-1.png",
-              "/ankaeufe/ankauf-2.png",
-              "/ankaeufe/ankauf-3.png",
-              "/ankaeufe/ankauf-4.png",
-              "/ankaeufe/ankauf-5.png",
-              "/ankaeufe/ankauf-6.png",
-              "/ankaeufe/ankauf-7.png",
+              "/ankaeufe/ankauf-1.webp",
+              "/ankaeufe/ankauf-2.webp",
+              "/ankaeufe/ankauf-3.webp",
+              "/ankaeufe/ankauf-4.webp",
+              "/ankaeufe/ankauf-5.webp",
+              "/ankaeufe/ankauf-6.webp",
+              "/ankaeufe/ankauf-7.webp",
+              "/ankaeufe/ankauf-8.webp",
             ].map((src, i) => (
-              <div key={i} className="aspect-video bg-gray-200 dark:bg-gray-900 rounded-lg overflow-hidden group cursor-pointer hover:shadow-xl">
+              <a
+                key={i}
+                href="#form"
+                className="block aspect-video bg-gray-200 dark:bg-gray-900 rounded-lg overflow-hidden group cursor-pointer hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-orange-500"
+                aria-label={`Zum Anfrageformular (Fahrzeug ${i + 1})`}
+                onClick={() => {
+                  setLeadSource(`purchase_image_${i + 1}`)
+                  trackEvent("click_to_form", { click_source: `purchase_image_${i + 1}` })
+                }}
+              >
                 <img
                   src={src}
                   alt={`Ankauf Fahrzeug ${i + 1}`}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   loading="lazy"
                 />
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -670,6 +693,10 @@ export default function Home() {
           <div className="text-center mt-10">
             <a
               href="#form"
+              onClick={() => {
+                setLeadSource("trust_cta")
+                trackEvent("click_to_form", { click_source: "trust_cta" })
+              }}
               className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-orange-600 hover:bg-orange-700 text-white font-semibold transition"
             >
               Jetzt unverbindliches Angebot erhalten

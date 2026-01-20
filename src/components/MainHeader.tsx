@@ -60,7 +60,7 @@ export default function MainHeader() {
             >
               <div className="rounded-lg p-1 md:p-2">
                 <Image
-                  src="/brand/logo-main.jpg"
+                  src="/brand/logo-main.webp"
                   alt="FrankenAutoAnkauf Logo"
                   width={240}
                   height={80}

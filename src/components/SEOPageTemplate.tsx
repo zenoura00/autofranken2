@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Check, Phone, Mail, ChevronDown, ChevronUp, MapPin, Clock, Shield, Car, Banknote, FileCheck } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
+import { setLeadSource, gtagEvent } from "@/lib/leadTracking"
 
 interface FAQ {
   question: string
@@ -47,7 +48,9 @@ export default function SEOPageTemplate({
 }: SEOPageProps) {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
 
-  const scrollToForm = () => {
+  const goToForm = (click_source: string) => {
+    setLeadSource(click_source)
+    gtagEvent("click_to_form", { click_source })
     window.location.href = '/#form'
   }
 
@@ -96,7 +99,7 @@ export default function SEOPageTemplate({
               <Link href="/auto-verkaufen-sofort" className="hover:text-orange-600 transition">Sofort verkaufen</Link>
               <Link href="/autoankauf-nuernberg" className="hover:text-orange-600 transition">Nürnberg</Link>
             </nav>
-            <Button onClick={scrollToForm} className="bg-orange-600 hover:bg-orange-700">
+            <Button onClick={() => goToForm("header_cta")} className="bg-orange-600 hover:bg-orange-700">
               Jetzt verkaufen
             </Button>
           </div>
@@ -116,17 +119,21 @@ export default function SEOPageTemplate({
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              onClick={scrollToForm}
+              onClick={() => goToForm("hero_cta")}
               className="bg-white text-orange-600 hover:bg-gray-100 hover:scale-105 transition-all text-lg px-8"
             >
               Kostenlose Bewertung
             </Button>
-            <a href="tel:+4917632333561">
-              <Button size="lg" className="bg-transparent border-2 border-white text-white hover:bg-white/20 text-lg px-8">
+            <Button
+              asChild
+              size="lg"
+              className="bg-transparent border-2 border-white text-white hover:bg-white/20 text-lg px-8"
+            >
+              <a href="tel:+4917632333561" aria-label="Anrufen">
                 <Phone className="w-5 h-5 mr-2" />
                 0176 - 323 335 61
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
         </div>
       </section>
@@ -237,17 +244,17 @@ export default function SEOPageTemplate({
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              onClick={scrollToForm}
+              onClick={() => goToForm("hero_cta")}
               className="bg-white text-orange-600 hover:bg-gray-100 text-lg px-8"
             >
               Jetzt Angebot erhalten
             </Button>
-            <a href="tel:+4917632333561">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 text-lg px-8">
+            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10 text-lg px-8">
+              <a href="tel:+4917632333561" aria-label="Jetzt anrufen">
                 <Phone className="w-5 h-5 mr-2" />
                 Jetzt anrufen
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
         </div>
       </section>

@@ -115,12 +115,17 @@ export default function UnfallAutoPage() {
                   >
                     Kostenlose Bewertung
                   </Button>
-                  <a href="tel:+4917632333561">
-                    <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 text-lg w-full sm:w-auto">
+                  <Button
+                    asChild
+                    size="lg"
+                    variant="outline"
+                    className="border-white text-white hover:bg-white/10 text-lg w-full sm:w-auto"
+                  >
+                    <a href="tel:+4917632333561" aria-label="Anrufen">
                       <Phone className="w-5 h-5 mr-2" />
                       0176 - 323 335 61
-                    </Button>
-                  </a>
+                    </a>
+                  </Button>
                 </div>
               </CardContent>
             </Card>
