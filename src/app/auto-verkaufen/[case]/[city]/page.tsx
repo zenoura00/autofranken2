@@ -9,11 +9,8 @@ export async function generateStaticParams() {
   for (const ca of cases) {
     for (const ci of cities) {
       paths.push({ case: ca, city: ci })
-    }
-  }
 
   return paths
-}
 
 export const revalidate = 60 * 60 * 24 * 14 // 14 يوم
 
@@ -39,15 +36,12 @@ export const dynamicParams = true
 export const revalidate = 60 * 60 * 24 * 14 // 14 days
 
 // Do not prebuild any case×city pages during the build.
-}
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   if (!isPSEOCaseKey(params.case) || !isPSEOCityKey(params.city)) {
     return {
       title: 'Seite nicht gefunden | Franken Auto Ankauf',
       robots: { index: false, follow: false }
-    }
-  }
 
   const seo = generatePSEOPage(params.case, params.city)
   const canonicalUrl = `https://frankenautoankauf.de/auto-verkaufen/${params.case}/${params.city}`
@@ -68,21 +62,16 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       card: "summary_large_image",
       title: seo.metadata.title,
       description: seo.metadata.description
-    }
-  }
-}
 
 function iconForCase(caseKey: PSEOCaseKey) {
   if (caseKey === 'motorschaden') return <Settings className="w-20 h-20 mx-auto" />
   if (caseKey === 'unfallwagen') return <Car className="w-20 h-20 mx-auto" />
   return <Shield className="w-20 h-20 mx-auto" />
-}
 
 function featureIcon(name: 'shield' | 'clock' | 'banknote') {
   if (name === 'clock') return <Clock className="w-12 h-12 text-orange-600" />
   if (name === 'banknote') return <Banknote className="w-12 h-12 text-orange-600" />
   return <Shield className="w-12 h-12 text-orange-600" />
-}
 
 export default function CaseCityPage({ params }: { params: Params }) {
   if (!isPSEOCaseKey(params.case) || !isPSEOCityKey(params.city)) {
@@ -99,7 +88,6 @@ export default function CaseCityPage({ params }: { params: Params }) {
         </div>
       </div>
     )
-  }
 
   const caseKey = params.case
   const cityKey = params.city
@@ -150,4 +138,3 @@ export default function CaseCityPage({ params }: { params: Params }) {
       relatedLinks={g.relatedLinks}
     />
   )
-}
