@@ -9,7 +9,6 @@ import { pseoCities, type PSEOCityKey } from "@/lib/pseo/pseoCities";
 import { isPSEOCityKey } from "@/lib/pseo/pseoGenerator";
 
 export const revalidate = 1209600; // 14 days
-export const dynamicParams = true;
 
 type Params = { city: string };
 
@@ -35,32 +34,7 @@ function pickN<T>(arr: T[], seed: string, n: number): T[] {
 }
 
 export async function generateStaticParams(): Promise<Params[]> {
-  // Pre-render only the most important city pages to keep build output small.
-  // All other cities will be generated on-demand (ISR) and cached via `revalidate`.
-  const topCities: PSEOCityKey[] = [
-    "nuernberg",
-    "erlangen",
-    "fuerth",
-    "wuerzburg",
-    "bamberg",
-    "bayreuth",
-    "ansbach",
-    "regensburg",
-    "ingolstadt",
-    "schwabach",
-    "coburg",
-    "amberg",
-    "hof",
-    "kulmbach",
-    "kitzingen",
-    "neumarkt",
-    "schweinfurt",
-    "forchheim",
-    "roth",
-    "herzogenaurach"
-  ];
-
-  return topCities.filter(isPSEOCityKey).map((city) => ({ city }));
+  return (Object.keys(pseoCities) as PSEOCityKey[]).map((city) => ({ city }));
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {

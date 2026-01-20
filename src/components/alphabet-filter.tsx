@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
 
 type Letter = string
 
@@ -26,23 +25,18 @@ function getFirstLetter(value: string): Letter {
 export type AlphabetItem = {
   id: string
   label: string
-  /** Optional short line under the title (e.g., region). */
-  subLabel?: string
-  /** Optional description text shown in the card. */
-  description?: string
-  /** Optional primary link (card title becomes a link if provided). */
-  href?: string
-  /** Optional list of links displayed at the bottom of the card. */
-  links?: Array<{ href: string; label: string }>
+  // Any extra data needed by the caller.
+  [key: string]: unknown
 }
 
 export function AlphabetFilter<T extends AlphabetItem>(props: {
   items: T[]
+  renderItem: (item: T) => React.ReactNode
   letters?: Letter[]
   allLabel?: string
   className?: string
 }) {
-  const { items, letters = DEFAULT_LETTERS, allLabel = "Alle", className } = props
+  const { items, renderItem, letters = DEFAULT_LETTERS, allLabel = "Alle", className } = props
 
   const [active, setActive] = React.useState<Letter | "ALL">("ALL")
 
@@ -104,32 +98,7 @@ export function AlphabetFilter<T extends AlphabetItem>(props: {
       {filtered.length === 0 ? (
         <div className="text-sm text-muted-foreground">Keine Einträge für diesen Buchstaben.</div>
       ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map(i => (
-            <div key={i.id} className="border rounded-lg p-4 hover:shadow-sm transition">
-              {i.href ? (
-                <Link className="font-semibold text-lg mb-1 text-orange-600 underline" href={i.href}>
-                  {i.label}
-                </Link>
-              ) : (
-                <div className="font-semibold text-lg mb-1">{i.label}</div>
-              )}
-
-              {i.subLabel ? <div className="text-sm text-muted-foreground mb-2">{i.subLabel}</div> : null}
-              {i.description ? <p className="text-sm text-muted-foreground mb-3">{i.description}</p> : null}
-
-              {i.links && i.links.length > 0 ? (
-                <div className="flex flex-wrap gap-3 text-sm">
-                  {i.links.map(l => (
-                    <Link key={l.href} className="text-orange-600 underline" href={l.href}>
-                      {l.label}
-                    </Link>
-                  ))}
-                </div>
-              ) : null}
-            </div>
-          ))}
-        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">{filtered.map(i => renderItem(i))}</div>
       )}
     </div>
   )

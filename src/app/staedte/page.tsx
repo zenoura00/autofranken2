@@ -13,16 +13,7 @@ export default function StaedtePage() {
   const cities = (Object.keys(pseoCities) as PSEOCityKey[])
     .map(k => ({ key: k, ...pseoCities[k] }))
     .sort((a, b) => a.name.localeCompare(b.name, "de"))
-    .map(c => ({
-      id: c.key,
-      label: c.name,
-      subLabel: c.regionLabel,
-      links: [
-        { href: `/autoankauf/${c.key}`, label: "Stadtseite" },
-        { href: `/auto-verkaufen-sofort/${c.key}`, label: "Heute / sofort" },
-        { href: `/auto-verkaufen/ohne-tuev/${c.key}`, label: "Ohne TÜV" },
-      ],
-    }))
+    .map(c => ({ id: c.key, label: c.name, cityKey: c.key, name: c.name, region: c.regionLabel }))
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -37,7 +28,26 @@ export default function StaedtePage() {
           </span>
         </p>
 
-        <AlphabetFilter items={cities} />
+        <AlphabetFilter
+          items={cities}
+          renderItem={city => (
+            <div key={city.id} className="border rounded-lg p-4 hover:shadow-sm transition">
+              <div className="font-semibold text-lg mb-1">{city.name as string}</div>
+              <div className="text-sm text-muted-foreground mb-3">{city.region as string}</div>
+              <div className="flex flex-wrap gap-3 text-sm">
+                <Link className="text-orange-600 underline" href={`/autoankauf/${city.cityKey as string}`}>
+                  Stadtseite
+                </Link>
+                <Link className="text-orange-600 underline" href={`/auto-verkaufen-sofort/${city.cityKey as string}`}>
+                  Heute / sofort
+                </Link>
+                <Link className="text-orange-600 underline" href={`/auto-verkaufen/ohne-tuev/${city.cityKey as string}`}>
+                  Ohne TÜV
+                </Link>
+              </div>
+            </div>
+          )}
+        />
 
         <div className="mt-10 p-6 bg-orange-50 border border-orange-100 rounded-lg">
           <h2 className="text-2xl font-bold mb-2">Noch unsicher?</h2>
