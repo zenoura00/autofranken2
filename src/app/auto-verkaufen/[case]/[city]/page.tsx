@@ -12,7 +12,6 @@ export async function generateStaticParams() {
 
   return paths
 
-export const revalidate = 60 * 60 * 24 * 14 // 14 يوم
 
 import type { Metadata } from 'next'
 import Link from "next/link"
@@ -24,6 +23,7 @@ import { Banknote, Clock, Shield, Settings, Car } from 'lucide-react'
 import { pseoCases, type PSEOCaseKey } from '@/lib/pseo/pseoCases'
 import { pseoCities, type PSEOCityKey } from '@/lib/pseo/pseoCities'
 import { generatePSEOPage, isPSEOCaseKey, isPSEOCityKey } from '@/lib/pseo/pseoGenerator'
+export const revalidate = 60 * 60 * 24 * 14 // 14 يوم
 
 type Params = { case: string; city: string }
 
@@ -33,7 +33,6 @@ type Params = { case: string; city: string }
 // We therefore do NOT pre-render any params at build time.
 // Instead, pages are generated on first request and then cached via ISR.
 export const dynamicParams = true
-export const revalidate = 60 * 60 * 24 * 14 // 14 days
 
 // Do not prebuild any case×city pages during the build.
 
