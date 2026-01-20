@@ -257,7 +257,7 @@ ${bilderHtml}
 }
 
 // Force dynamic rendering
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 
 // Needed for @vercel/blob
-export const runtime = 'nodejs'
+export const runtime = 'nodejs';

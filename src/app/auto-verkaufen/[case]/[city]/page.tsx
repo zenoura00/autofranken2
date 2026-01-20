@@ -1,3 +1,22 @@
+import { caseKeys, cityKeysCore } from "@/lib/pseo/sitemapData"
+
+export async function generateStaticParams() {
+  const cases = caseKeys()
+  const cities = cityKeysCore()
+
+  const paths = []
+
+  for (const ca of cases) {
+    for (const ci of cities) {
+      paths.push({ case: ca, city: ci })
+    }
+  }
+
+  return paths
+}
+
+export const revalidate = 60 * 60 * 24 * 14 // 14 يوم
+
 import type { Metadata } from 'next'
 import Link from "next/link"
 
@@ -20,8 +39,6 @@ export const dynamicParams = true
 export const revalidate = 60 * 60 * 24 * 14 // 14 days
 
 // Do not prebuild any case×city pages during the build.
-export async function generateStaticParams() {
-  return [] as Array<{ case: string; city: string }>
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
@@ -31,7 +48,28 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       robots: { index: false, follow: false }
     }
   }
-  return generatePSEOPage(params.case, params.city).metadata
+
+  const seo = generatePSEOPage(params.case, params.city)
+  const canonicalUrl = `https://frankenautoankauf.de/auto-verkaufen/${params.case}/${params.city}`
+  return {
+    ...seo.metadata,
+    alternates: {
+      canonical: canonicalUrl
+    },
+    openGraph: {
+      title: seo.metadata.title,
+      description: seo.metadata.description,
+      url: canonicalUrl,
+      siteName: "Franken Auto Ankauf",
+      locale: "de_DE",
+      type: "article"
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: seo.metadata.title,
+      description: seo.metadata.description
+    }
+  }
 }
 
 function iconForCase(caseKey: PSEOCaseKey) {

@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { del, list } from '@vercel/blob'
 
-export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 const PREFIX = 'uploads/'
 const RETENTION_DAYS = 30
