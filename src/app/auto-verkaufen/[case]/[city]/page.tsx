@@ -70,3 +70,14 @@ function featureIcon(name: 'shield' | 'clock' | 'banknote') {
   if (name === 'banknote') return <Banknote className="w-6 h-6" />
   return <Shield className="w-6 h-6" />
 }
+
+
+export default function Page({ params }: { params: Params }) {
+  const { case: caseKey, city: cityKey } = params
+  return (
+    <SEOPageTemplate
+      caseKey={caseKey as PSEOCaseKey}
+      cityKey={cityKey as PSEOCityKey}
+    />
+  )
+}
