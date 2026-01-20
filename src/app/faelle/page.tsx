@@ -12,7 +12,16 @@ export const metadata = {
 export default function FaellePage() {
   const cases = [...pseoCasesList]
     .sort((a, b) => a.title.localeCompare(b.title, "de"))
-    .map(c => ({ id: c.key, label: c.title, caseKey: c.key, title: c.title, hint: c.shortLabel }))
+    .map(c => ({
+      id: c.key,
+      label: c.title,
+      subLabel: c.shortLabel,
+      description: "Lokale Seiten pro Stadt verfügbar.",
+      links: [
+        { href: `/auto-verkaufen/${c.key}`, label: "Übersicht" },
+        { href: "/staedte", label: "Stadt wählen" },
+      ],
+    }))
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -27,25 +36,7 @@ export default function FaellePage() {
           </span>
         </p>
 
-        <AlphabetFilter
-          items={cases}
-          renderItem={c => (
-            <div key={c.id} className="border rounded-lg p-4 hover:shadow-sm transition">
-              <div className="font-semibold text-lg mb-2">{c.title as string}</div>
-              <p className="text-sm text-muted-foreground mb-3">
-                Fokus: <span className="font-medium">{c.hint as string}</span> — lokale Seiten pro Stadt verfügbar.
-              </p>
-              <div className="flex flex-wrap gap-3 text-sm">
-                <Link className="text-orange-600 underline" href={`/auto-verkaufen/${c.caseKey as string}`}>
-                  Übersicht
-                </Link>
-                <Link className="text-orange-600 underline" href="/staedte">
-                  Stadt wählen
-                </Link>
-              </div>
-            </div>
-          )}
-        />
+        <AlphabetFilter items={cases} />
 
         <div className="mt-10 p-6 bg-orange-50 border border-orange-100 rounded-lg">
           <h2 className="text-2xl font-bold mb-2">Schnell starten (2 Minuten)</h2>
