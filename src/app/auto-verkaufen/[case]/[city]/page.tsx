@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   }
 
   const seo = generatePSEOPage(params.case, params.city)
-  const canonicalUrl = \`https://frankenautoankauf.de/auto-verkaufen/\${params.case}/\${params.city}\`
+  const canonicalUrl = `https://frankenautoankauf.de/auto-verkaufen/${params.case}/${params.city}`
 
   return {
     ...seo.metadata,
