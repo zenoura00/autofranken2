@@ -3,13 +3,20 @@ import Link from "next/link"
 import SEOPageTemplate from '@/components/SEOPageTemplate'
 import { Banknote, Clock, Shield, Settings, Car } from 'lucide-react'
 
-import { caseKeys, cityKeysCore } from "@/lib/pseo/sitemapData"
 import { pseoCases, type PSEOCaseKey } from '@/lib/pseo/pseoCases'
 import { pseoCities, type PSEOCityKey } from '@/lib/pseo/pseoCities'
 import { generatePSEOPage, isPSEOCaseKey, isPSEOCityKey } from '@/lib/pseo/pseoGenerator'
 
-export const dynamicParams = true
-export const revalidate = 60 * 60 * 24 * 14 // 14 يوم
+// Do NOT pre-render ~11k pages during build (Vercel output limit).
+// Generate on-demand and revalidate (ISR) instead.
+export const dynamicParams = true;
+export const revalidate = 1209600; // 14 days
+
+export async function generateStaticParams() {
+  // Intentionally return no params so the build stays small.
+  // Pages are generated on-demand and cached (ISR).
+  return [];
+}
 
 type Params = { case: string; city: string }
 
@@ -56,6 +63,7 @@ function featureIcon(name: 'shield' | 'clock' | 'banknote') {
   if (name === 'banknote') return <Banknote className="w-6 h-6" />
   return <Shield className="w-6 h-6" />
 }
+
 
 export default function Page({ params }: { params: Params }) {
   const { case: caseKey, city: cityKey } = params
