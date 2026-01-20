@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 
 import { urlsetXml } from "@/lib/pseo/sitemapHelpers"
-import { cityOnlyPathsCore, getBaseUrl, getNowIso } from "@/lib/pseo/sitemapData"
+import { cityOnlyPathsAll, getBaseUrl, getNowIso } from "@/lib/pseo/sitemapData"
 
 export const runtime = "nodejs"
 

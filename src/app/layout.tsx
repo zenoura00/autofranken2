@@ -72,9 +72,6 @@ export const metadata: Metadata = {
     canonical: "https://frankenautoankauf.de",
   },
   category: "Automotive",
-  verification: {
-    google: "verification-code-here",
-  },
 };
 
 // Structured Data for Google Rich Snippets

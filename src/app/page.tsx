@@ -51,6 +51,7 @@ export default function Home() {
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [selectedImages, setSelectedImages] = useState<File[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [formError, setFormError] = useState<string | null>(null)
 
   const scrollToFormWithBrand = (brandName: string) => {
     setSelectedFeaturedBrand(brandName)
@@ -74,7 +75,7 @@ export default function Home() {
       const newFiles = Array.from(files)
       const validFiles = newFiles.filter(file => {
         if (file.size > 2 * 1024 * 1024) {
-          alert(`Die Datei "${file.name}" ist zu groß. Maximale Größe: 2 MB`)
+          setFormError(`Die Datei "${file.name}" ist zu groß. Maximale Größe: 2 MB`)
           return false
         }
         return true
@@ -93,20 +94,21 @@ export default function Home() {
   }
 
   const handleNextStep = () => {
+    setFormError(null)
     if (showCustomInput) {
       if (customBrandModel && formData.year && formData.mileage && formData.fuel) {
         setFormData(prev => ({ ...prev, brand: customBrandModel, model: "Manuell eingegeben" }))
         setCurrentStep(2)
         trackEvent('form_step_1_complete', { car_brand: customBrandModel, input_type: 'custom' })
       } else {
-        alert("Bitte füllen Sie alle Fahrzeugdaten aus.")
+        setFormError("Bitte füllen Sie alle Fahrzeugdaten aus.")
       }
     } else {
       if (formData.brand && formData.model && formData.year && formData.mileage && formData.fuel) {
         setCurrentStep(2)
         trackEvent('form_step_1_complete', { car_brand: formData.brand, car_model: formData.model })
       } else {
-        alert("Bitte füllen Sie alle Fahrzeugdaten aus.")
+        setFormError("Bitte füllen Sie alle Fahrzeugdaten aus.")
       }
     }
   }
@@ -117,7 +119,7 @@ export default function Home() {
 
   const handleSubmit = async () => {
     if (!formData.name || !formData.email || !formData.phone || !formData.location) {
-      alert("Bitte füllen Sie alle Pflichtfelder aus.")
+      setFormError("Bitte füllen Sie alle Pflichtfelder aus.")
       return
     }
     setIsSubmitting(true)
@@ -186,11 +188,11 @@ export default function Home() {
         clearLeadSource()
         setFormSubmitted(true)
       } else {
-        alert("Fehler beim Senden. Bitte versuchen Sie es erneut oder rufen Sie uns an.")
+        setFormError("Fehler beim Senden. Bitte versuchen Sie es erneut oder rufen Sie uns an.")
       }
     } catch (error) {
       console.error('Error:', error)
-      alert("Fehler beim Senden. Bitte versuchen Sie es erneut oder rufen Sie uns an.")
+      setFormError("Fehler beim Senden. Bitte versuchen Sie es erneut oder rufen Sie uns an.")
     } finally {
       setIsSubmitting(false)
     }

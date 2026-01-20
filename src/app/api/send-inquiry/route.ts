@@ -240,19 +240,19 @@ ${bilderHtml}
     } else {
       console.error('❌ Web3Forms Fehler:', result.message || JSON.stringify(result))
       await forwardToSheets()
-      // Still return success to user but log the error
+      // Web3Forms failed — return an error so the UI can show feedback
       return NextResponse.json({
-        success: true,
-        message: 'Anfrage erfolgreich gesendet!'
-      })
+        success: false,
+        message: 'Beim Senden ist ein Fehler aufgetreten. Bitte versuche es erneut.'
+      }, { status: 502 })
     }
 
   } catch (error) {
     console.error('Error processing inquiry:', error)
     return NextResponse.json({
-      success: true,
-      message: 'Anfrage erfolgreich gesendet!'
-    })
+      success: false,
+      message: 'Beim Senden ist ein Fehler aufgetreten. Bitte versuche es erneut.'
+    }, { status: 500 })
   }
 }
 

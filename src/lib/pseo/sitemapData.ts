@@ -7,8 +7,10 @@ export function getBaseUrl() {
   return (process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_BASE).replace(/\/$/, "")
 }
 
+const BUILD_TIME_ISO = process.env.NEXT_PUBLIC_BUILD_TIME || new Date().toISOString()
+
 export function getNowIso() {
-  return new Date().toISOString()
+  return BUILD_TIME_ISO
 }
 
 export function staticPagePaths() {
@@ -42,6 +44,10 @@ export function caseOnlyPaths() {
 
 export function cityOnlyPathsCore() {
   return cityKeysCore().map(k => `/autoankauf/${k}`)
+}
+
+export function cityOnlyPathsAll() {
+  return cityKeysAll().map(k => `/autoankauf/${k}`)
 }
 
 export function intentCityPathsCore() {
