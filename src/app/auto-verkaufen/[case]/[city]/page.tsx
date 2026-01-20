@@ -8,22 +8,10 @@ import { pseoCases, type PSEOCaseKey } from '@/lib/pseo/pseoCases'
 import { pseoCities, type PSEOCityKey } from '@/lib/pseo/pseoCities'
 import { generatePSEOPage, isPSEOCaseKey, isPSEOCityKey } from '@/lib/pseo/pseoGenerator'
 
-export const revalidate = 60 * 60 * 24 * 14 // 14 يوم
-
-export async function generateStaticParams() {
-  const cases = caseKeys()
-  const cities = cityKeysCore()
-
-  const paths = []
-
-  for (const ca of cases) {
-    for (const ci of cities) {
-      paths.push({ case: ca, city: ci })
-    }
-  }
-
-  return paths
-}
+// IMPORTANT (Vercel deploy size): Do NOT prerender thousands of (case,city) pages at build time.
+// Render on-demand and cache with ISR.
+export const dynamic = 'force-dynamic'
+export const revalidate = 1209600 // 14 days
 
 type Params = { case: string; city: string }
 
