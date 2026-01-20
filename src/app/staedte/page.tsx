@@ -1,6 +1,7 @@
 import Link from "next/link"
 
-import { CITIES } from "@/lib/seo/cities"
+import { AlphabetFilter } from "@/components/alphabet-filter"
+import { pseoCities, type PSEOCityKey } from "@/lib/pseo/pseoCities"
 
 export const metadata = {
   title: "Städte & Regionen | Franken Auto Ankauf",
@@ -9,7 +10,10 @@ export const metadata = {
 }
 
 export default function StaedtePage() {
-  const cities = [...CITIES].sort((a, b) => a.name.localeCompare(b.name, "de"))
+  const cities = (Object.keys(pseoCities) as PSEOCityKey[])
+    .map(k => ({ key: k, ...pseoCities[k] }))
+    .sort((a, b) => a.name.localeCompare(b.name, "de"))
+    .map(c => ({ id: c.key, label: c.name, cityKey: c.key, name: c.name, region: c.regionLabel }))
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -24,21 +28,26 @@ export default function StaedtePage() {
           </span>
         </p>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {cities.map(city => (
-            <div key={city.slug} className="border rounded-lg p-4 hover:shadow-sm transition">
-              <div className="font-semibold text-lg mb-2">{city.name}</div>
+        <AlphabetFilter
+          items={cities}
+          renderItem={city => (
+            <div key={city.id} className="border rounded-lg p-4 hover:shadow-sm transition">
+              <div className="font-semibold text-lg mb-1">{city.name as string}</div>
+              <div className="text-sm text-muted-foreground mb-3">{city.region as string}</div>
               <div className="flex flex-wrap gap-3 text-sm">
-                <Link className="text-orange-600 underline" href={`/autoankauf-${city.slug}`}>
+                <Link className="text-orange-600 underline" href={`/autoankauf/${city.cityKey as string}`}>
                   Stadtseite
                 </Link>
-                <Link className="text-orange-600 underline" href={`/auto-verkaufen-sofort-${city.slug}`}>
+                <Link className="text-orange-600 underline" href={`/auto-verkaufen-sofort/${city.cityKey as string}`}>
                   Heute / sofort
+                </Link>
+                <Link className="text-orange-600 underline" href={`/auto-verkaufen/ohne-tuev/${city.cityKey as string}`}>
+                  Ohne TÜV
                 </Link>
               </div>
             </div>
-          ))}
-        </div>
+          )}
+        />
 
         <div className="mt-10 p-6 bg-orange-50 border border-orange-100 rounded-lg">
           <h2 className="text-2xl font-bold mb-2">Noch unsicher?</h2>
