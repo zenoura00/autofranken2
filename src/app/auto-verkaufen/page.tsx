@@ -48,7 +48,7 @@ export default function Page() {
             <div className="flex items-start justify-between gap-4">
               <div>
                 <div className="text-lg font-semibold group-hover:underline">{c.title}</div>
-                <div className="mt-1 text-sm text-muted-foreground">{c.desc}</div>
+                <div className="mt-1 text-sm text-muted-foreground">{c.shortLabel}</div>
               </div>
               <span className="text-sm text-muted-foreground">→</span>
             </div>
