@@ -12,7 +12,7 @@ export function GET() {
   const weekly = new Set(["/", "/auto-verkaufen", "/auto-verkaufen-sofort"])
   const high = new Set(["/auto-verkaufen", "/auto-verkaufen-sofort"])
 
-  const entries: UrlEntry[] = staticPagePaths().map((path) => {
+  const entries: UrlEntry[] = staticPagePaths().map((path): UrlEntry => ({
     const loc = path == "/" ? base : base + path
     const changefreq = weekly.has(path) ? "weekly" : "monthly"
     const priority = path == "/" ? 1 : high.has(path) ? 0.8 : 0.6

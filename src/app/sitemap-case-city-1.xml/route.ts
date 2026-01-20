@@ -11,7 +11,7 @@ export function GET() {
   const all = caseCityPathsAll()
   const slice = all.slice(0, 5000)
 
-  const entries: UrlEntry[] = slice.map((p) => ({
+  const entries: UrlEntry[] = slice.map((p): UrlEntry => ({
     loc: base + p,
     lastmod,
     changefreq: "monthly",

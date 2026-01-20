@@ -31,14 +31,8 @@ export default function StaedtePage() {
 
       <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
         {cities.map((c) => (
-          <li
-            key={c.cityKey}
-            className="rounded-lg border p-4 transition hover:bg-muted"
-          >
-            <Link
-              href={`/autoankauf/${c.cityKey}`}
-              className="block font-medium hover:underline"
-            >
+          <li key={c.cityKey} className="rounded-lg border p-4 transition hover:bg-muted">
+            <Link href={`/autoankauf/${c.cityKey}`} className="block font-medium hover:underline">
               {c.name}
             </Link>
           </li>

@@ -9,7 +9,7 @@ import { type PSEOCaseKey } from "@/lib/pseo/pseoCases"
 import { type PSEOCityKey } from "@/lib/pseo/pseoCities"
 import { generatePSEOPage, isPSEOCaseKey, isPSEOCityKey } from "@/lib/pseo/pseoGenerator"
 
-export const revalidate = 60 * 60 * 24 * 14 // 14 Tage
+export const revalidate = 1209600
 
 export async function generateStaticParams() {
   const cases = caseKeys()

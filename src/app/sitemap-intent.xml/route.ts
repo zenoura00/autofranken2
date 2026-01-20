@@ -11,18 +11,22 @@ export function GET() {
 
   const core = ["/auto-verkaufen-heute", "/auto-verkaufen-sofort"]
   const entries: UrlEntry[] = [
-    ...core.map((p) => ({
-      loc: base + p,
-      lastmod,
-      changefreq: "weekly",
-      priority: 0.8,
-    })),
-    ...intentCityPathsCore().map((p) => ({
-      loc: base + p,
-      lastmod,
-      changefreq: "weekly",
-      priority: 0.65,
-    })),
+    ...core.map(
+      (p): UrlEntry => ({
+        loc: base + p,
+        lastmod,
+        changefreq: "weekly",
+        priority: 0.8,
+      })
+    ),
+    ...intentCityPathsCore().map(
+      (p): UrlEntry => ({
+        loc: base + p,
+        lastmod,
+        changefreq: "weekly",
+        priority: 0.65,
+      })
+    ),
   ]
 
   const xml = urlsetXml(entries)
