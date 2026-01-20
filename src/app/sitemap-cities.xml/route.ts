@@ -9,7 +9,7 @@ export function GET() {
   const base = getBaseUrl()
   const lastmod = getNowIso()
 
-  const entries: UrlEntry[] = cityOnlyPathsCore().map((p) => ({
+  const entries: UrlEntry[] = cityOnlyPathsAll().map((p) => ({
     loc: base + p,
     lastmod,
     changefreq: "monthly",
