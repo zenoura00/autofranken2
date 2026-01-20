@@ -1,58 +1,49 @@
 import Link from "next/link"
-
-import { AlphabetFilter } from "@/components/alphabet-filter"
-import { pseoCities, type PSEOCityKey } from "@/lib/pseo/pseoCities"
+import { pseoCities } from "@/lib/pseo/pseoCities"
 
 export const metadata = {
-  title: "Städte & Regionen | Franken Auto Ankauf",
+  title: "Auto Ankauf Städte – Franken Auto Ankauf",
   description:
-    "Alle Städte und Regionen in Franken und Umgebung: finden Sie Ihren lokalen Autoankauf und starten Sie die Anfrage in 2 Minuten.",
+    "Auto verkaufen in allen Städten in Franken. Wir kaufen Ihr Auto schnell, seriös und unkompliziert – auch ohne TÜV oder mit Schaden.",
+}
+
+type CityItem = {
+  cityKey: string
+  name: string
 }
 
 export default function StaedtePage() {
-  const cities = (Object.keys(pseoCities) as PSEOCityKey[])
-    .map(k => ({ key: k, ...pseoCities[k] }))
-    .sort((a, b) => a.name.localeCompare(b.name, "de"))
-    .map(c => ({
-      id: c.key,
-      label: c.name,
-      subLabel: c.regionLabel,
-      links: [
-        { href: `/autoankauf/${c.key}`, label: "Stadtseite" },
-        { href: `/auto-verkaufen-sofort/${c.key}`, label: "Heute / sofort" },
-        { href: `/auto-verkaufen/ohne-tuev/${c.key}`, label: "Ohne TÜV" },
-      ],
+  const cities: CityItem[] = Object.keys(pseoCities)
+    .map((k) => ({
+      cityKey: k,
+      name: (pseoCities as Record<string, { name: string }>)[k].name,
     }))
+    .sort((a, b) => a.name.localeCompare(b.name, "de"))
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="container mx-auto px-4 py-12 max-w-5xl">
-        <h1 className="text-4xl font-bold mb-4">Städte & Regionen</h1>
-        <p className="text-lg text-muted-foreground mb-8">
-          Wählen Sie Ihre Stadt, um lokale Informationen zum Autoankauf zu sehen — oder springen Sie direkt zum Formular.
-          <span className="ml-2">
-            <Link href="/#form" className="text-orange-600 underline">
-              Zum Formular
-            </Link>
-          </span>
-        </p>
+    <main className="mx-auto max-w-5xl px-4 py-12">
+      <h1 className="mb-6 text-3xl font-bold">Auto Ankauf in allen Städten</h1>
 
-        <AlphabetFilter items={cities} />
+      <p className="mb-10 text-muted-foreground">
+        Wählen Sie Ihre Stadt aus. Wir kaufen Ihr Auto schnell und zuverlässig –
+        unabhängig von Zustand oder Laufleistung.
+      </p>
 
-        <div className="mt-10 p-6 bg-orange-50 border border-orange-100 rounded-lg">
-          <h2 className="text-2xl font-bold mb-2">Noch unsicher?</h2>
-          <p className="text-muted-foreground mb-4">
-            Egal ob Motorschaden, ohne TÜV, Unfall oder Export — senden Sie kurz die wichtigsten Daten.
-            Wir melden uns mit einer realistischen Einschätzung.
-          </p>
-          <Link
-            href="/#form"
-            className="inline-block bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition"
+      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+        {cities.map((c) => (
+          <li
+            key={c.cityKey}
+            className="rounded-lg border p-4 transition hover:bg-muted"
           >
-            Kostenlose Bewertung starten
-          </Link>
-        </div>
-      </div>
-    </div>
+            <Link
+              href={`/autoankauf/${c.cityKey}`}
+              className="block font-medium hover:underline"
+            >
+              {c.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </main>
   )
 }
