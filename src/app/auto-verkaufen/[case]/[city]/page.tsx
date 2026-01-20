@@ -36,6 +36,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   const seo = generatePSEOPage(params.case, params.city)
   const canonicalUrl = `https://frankenautoankauf.de/auto-verkaufen/${params.case}/${params.city}`
+  const ogTitle = seo.metadata.title ?? undefined
+  const ogDescription = seo.metadata.description ?? undefined
 
   return {
     ...seo.metadata,
@@ -43,8 +45,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: seo.metadata.title,
-      description: seo.metadata.description,
+      title: ogTitle,
+      description: ogDescription,
       url: canonicalUrl,
       siteName: "Franken Auto Ankauf",
       locale: "de_DE",
@@ -60,8 +62,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     },
     twitter: {
       card: "summary_large_image",
-      title: seo.metadata.title,
-      description: seo.metadata.description,
+      title: ogTitle,
+      description: ogDescription,
       images: ["/og-image.png"],
     },
   }
