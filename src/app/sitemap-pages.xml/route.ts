@@ -12,10 +12,10 @@ export function GET() {
   const weekly = new Set(["/", "/auto-verkaufen", "/auto-verkaufen-sofort"])
   const high = new Set(["/auto-verkaufen", "/auto-verkaufen-sofort"])
 
-  const entries: UrlEntry[] = staticPagePaths().map((path): UrlEntry => ({
-    const loc = path == "/" ? base : base + path
-    const changefreq = weekly.has(path) ? "weekly" : "monthly"
-    const priority = path == "/" ? 1 : high.has(path) ? 0.8 : 0.6
+  const entries: UrlEntry[] = staticPagePaths().map((p): UrlEntry => {
+    const loc = p === "/" ? base : base + p
+    const changefreq: UrlEntry["changefreq"] = weekly.has(p) ? "weekly" : "monthly"
+    const priority = p === "/" ? 1 : high.has(p) ? 0.8 : 0.6
     return { loc, lastmod, changefreq, priority }
   })
 
