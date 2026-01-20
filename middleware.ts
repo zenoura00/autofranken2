@@ -1,6 +1,9 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
+import { pseoCases } from "./src/lib/pseo/pseoCases";
+import { pseoCities } from "./src/lib/pseo/pseoCities";
+
 // We intentionally "delete" legacy, dash-style pages that were previously rendered by a generic
 // catch-all route (e.g. /auto-verkaufen-altes-auto). They caused thin/empty renders and SEO noise.
 //
@@ -22,6 +25,14 @@ const ALLOWED_DASH_SEGMENTS = new Set([
   "auto-verkaufen-sofort",
   "auto-verkaufen", // if someone uses /auto-verkaufen (not dash but keep safe)
 ]);
+
+const CASE_KEYS = new Set(Object.keys(pseoCases));
+const CITY_KEYS = new Set(Object.keys(pseoCities));
+
+// These sets let us decide whether a legacy dash URL can be safely redirected
+// to its official slash-based route.
+const CASE_KEYS = new Set(Object.keys(pseoCases));
+const CITY_KEYS = new Set(Object.keys(pseoCities));
 
 function isStaticAssetPath(pathname: string) {
   return (
@@ -45,8 +56,18 @@ export function middleware(req: NextRequest) {
   if (parts.length === 1) {
     const seg = parts[0];
 
-    // Delete unknown dash-style "auto-verkaufen-*" pages
-    if (seg.startsWith("auto-verkaufen-") && !ALLOWED_DASH_SEGMENTS.has(seg)) {
+    // --- Redirect legacy city dash pages to the official slash route ---
+    // Example: /autoankauf-aalen -> /autoankauf/aalen
+    if (seg.startsWith("autoankauf-")) {
+      const city = seg.replace(/^autoankauf-/, "");
+      if (CITY_KEYS.has(city)) {
+        const url = req.nextUrl.clone();
+        url.pathname = `/autoankauf/${city}`;
+        url.search = "";
+        return NextResponse.redirect(url, 308);
+      }
+
+      // Unknown city dash page: return Gone to avoid thin/empty pages.
       return new NextResponse("Gone", {
         status: 410,
         headers: {
@@ -56,11 +77,26 @@ export function middleware(req: NextRequest) {
       });
     }
 
-    // Optional: If you later decide to delete dash-style /autoankauf-<stadt> duplicates,
-    // enable the following block.
-    // if (seg.startsWith('autoankauf-')) {
-    //   return new NextResponse('Gone', { status: 410 });
-    // }
+    // --- Redirect legacy case dash pages to the official slash route ---
+    // Example: /auto-verkaufen-altes-auto -> /auto-verkaufen/altes-auto
+    if (seg.startsWith("auto-verkaufen-") && !ALLOWED_DASH_SEGMENTS.has(seg)) {
+      const c = seg.replace(/^auto-verkaufen-/, "");
+      if (CASE_KEYS.has(c)) {
+        const url = req.nextUrl.clone();
+        url.pathname = `/auto-verkaufen/${c}`;
+        url.search = "";
+        return NextResponse.redirect(url, 308);
+      }
+
+      // Unknown dash-style "auto-verkaufen-*" pages: Gone.
+      return new NextResponse("Gone", {
+        status: 410,
+        headers: {
+          "content-type": "text/plain; charset=utf-8",
+          "cache-control": "no-store",
+        },
+      });
+    }
   }
 
   return NextResponse.next();
