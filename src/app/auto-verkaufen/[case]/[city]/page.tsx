@@ -8,22 +8,8 @@ import { pseoCases, type PSEOCaseKey } from '@/lib/pseo/pseoCases'
 import { pseoCities, type PSEOCityKey } from '@/lib/pseo/pseoCities'
 import { generatePSEOPage, isPSEOCaseKey, isPSEOCityKey } from '@/lib/pseo/pseoGenerator'
 
+export const dynamicParams = true
 export const revalidate = 60 * 60 * 24 * 14 // 14 يوم
-
-export async function generateStaticParams() {
-  const cases = caseKeys()
-  const cities = cityKeysCore()
-
-  const paths = []
-
-  for (const ca of cases) {
-    for (const ci of cities) {
-      paths.push({ case: ca, city: ci })
-    }
-  }
-
-  return paths
-}
 
 type Params = { case: string; city: string }
 
@@ -70,7 +56,6 @@ function featureIcon(name: 'shield' | 'clock' | 'banknote') {
   if (name === 'banknote') return <Banknote className="w-6 h-6" />
   return <Shield className="w-6 h-6" />
 }
-
 
 export default function Page({ params }: { params: Params }) {
   const { case: caseKey, city: cityKey } = params
