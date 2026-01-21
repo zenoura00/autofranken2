@@ -1,118 +1,117 @@
-import type { Metadata } from "next"
-import Link from "next/link"
-import { notFound } from "next/navigation"
+import type { Metadata } from 'next'
 
-import SEOPageTemplate from "@/components/SEOPageTemplate"
-import { Shield, Clock, Banknote } from "lucide-react"
+import SEOPageTemplate from '@/components/SEOPageTemplate'
+import { Zap, Clock, Shield, Banknote } from 'lucide-react'
+import Link from 'next/link'
 
-import { pseoCities, type PSEOCityKey } from "@/lib/pseo/pseoCities"
-import { isPSEOCityKey } from "@/lib/pseo/pseoGenerator"
+import { pseoCities, coreCityKeys, type PSEOCityKey } from '@/lib/pseo/pseoCities'
+import { isPSEOCityKey, normalizeSlug } from '@/lib/pseo/pseoGenerator'
 
 type Params = { city: string }
 
 export async function generateStaticParams(): Promise<Params[]> {
-  // مهم: نبني صفحات المدن من نفس مصدر pseoCities
-  return (Object.keys(pseoCities) as PSEOCityKey[]).map((city) => ({ city }))
+  return (coreCityKeys as PSEOCityKey[]).map(city => ({ city }))
 }
 
-export async function generateMetadata(
-  props: { params: Promise<Params> | Params }
-): Promise<Metadata> {
-  const params = await Promise.resolve(props.params)
-  const citySlug = (params.city ?? "").toLowerCase()
-
+export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
+  const p = await params
+  const citySlug = normalizeSlug(p.city)
   if (!isPSEOCityKey(citySlug)) {
-    return { title: "Seite nicht gefunden | Franken Auto Ankauf", robots: { index: false, follow: false } }
+    return { title: 'Seite nicht gefunden | Franken Auto Ankauf', robots: { index: false, follow: false } }
   }
-
-  const city = pseoCities[citySlug]
-
+  const city = pseoCities[citySlug as any]
   return {
-    title: `Auto sofort verkaufen in ${city.name} | Franken Auto Ankauf`,
-    description: `Auto sofort verkaufen in ${city.name}: kostenloses Angebot, schnelle Abwicklung und Abholung möglich. Jetzt anfragen.`,
+    title: `Auto sofort verkaufen in ${city.name} | Heute noch Abschluss`,
+    description: `Auto sofort verkaufen in ${city.name} (${city.regionLabel}): schnelles Angebot, zügige Abwicklung, Abholung möglich. Jetzt kostenlos anfragen.`
   }
 }
 
-function featureIcon(name: "shield" | "clock" | "banknote") {
-  if (name === "clock") return <Clock className="w-12 h-12 text-orange-600" />
-  if (name === "banknote") return <Banknote className="w-12 h-12 text-orange-600" />
+function featureIcon(kind: 'shield' | 'clock' | 'banknote') {
+  if (kind === 'clock') return <Clock className="w-12 h-12 text-orange-600" />
+  if (kind === 'banknote') return <Banknote className="w-12 h-12 text-orange-600" />
   return <Shield className="w-12 h-12 text-orange-600" />
 }
 
-export default async function Page(props: { params: Promise<Params> | Params }) {
-  const params = await Promise.resolve(props.params)
-  const citySlug = (params.city ?? "").toLowerCase()
-
+export default async function AutoSofortCityPage({ params }: { params: Promise<Params> }) {
+  
+  const p = await params
+  const citySlug = normalizeSlug(p.city)
   if (!isPSEOCityKey(citySlug)) {
-    notFound()
+    return (
+      <div className="min-h-screen flex items-center justify-center p-8">
+        <div className="max-w-lg text-center">
+          <h1 className="text-3xl font-bold mb-3">Seite nicht gefunden</h1>
+          <p className="text-gray-600 dark:text-gray-300">Bitte prüfen Sie die URL.</p>
+          <p className="mt-4"><Link className="text-orange-600 underline" href="/">Zur Startseite</Link></p>
+        </div>
+      </div>
+    )
   }
 
-  const city = pseoCities[citySlug]
-
-  const benefits = [
-    `Sofort-Ankauf in ${city.name} – Anfrage in 1 Minute`,
-    "Kein Inserat, keine Probefahrten, kein „letzter Preis“",
-    "Transparente Bewertung und klare Kommunikation",
-    "Abholung möglich (je nach Standort/Zustand)",
-    "Zahlung bei Übergabe (Bar oder Überweisung)",
-  ]
-
-  const features = [
-    { icon: "shield" as const, title: "Seriös & klar", description: `Direkter Ankauf in ${city.name} – ohne Stress.` },
-    { icon: "clock" as const, title: "Schnell organisiert", description: `Kurze Wege rund um ${city.name} – Termin flexibel.` },
-    { icon: "banknote" as const, title: "Zahlung bei Übergabe", description: "Bar oder Überweisung – Sie entscheiden." },
-  ].map((f) => ({ ...f, iconEl: featureIcon(f.icon) }))
+  // Use the normalized slug for consistent lookups and links.
+  const cityKey = citySlug as PSEOCityKey
+  const city = pseoCities[cityKey]
 
   const faqs = [
     {
-      question: `Wie schnell kann ich in ${city.name} verkaufen?`,
-      answer:
-        "Oft sehr schnell: Anfrage → Angebot → Termin. Je genauer Ihre Angaben, desto schneller geht es.",
+      question: `Kann ich mein Auto in ${city.name} wirklich sofort verkaufen?`,
+      answer: `Ja – in vielen Fällen geht es sehr schnell. Senden Sie die Daten über das Formular, wir melden uns zeitnah mit einem Angebot und koordinieren die Abholung in ${city.name} und Umgebung.`
     },
     {
-      question: "Brauche ich Unterlagen?",
-      answer:
-        "Ideal: Zulassungsbescheinigung Teil I/II + Ausweis. Falls etwas fehlt: kurz im Formular erwähnen.",
+      question: `Welche Unterlagen brauche ich in ${city.name}?`,
+      answer: `Meist genügen Zulassungsbescheinigung Teil I/II, Ausweis und Schlüssel. Wenn etwas fehlt, sagen Sie es im Formular – wir finden eine Lösung.`
     },
     {
-      question: "Ist Abholung möglich?",
-      answer:
-        `Je nach Lage und Zustand ja – besonders in und um ${city.name}.`,
-    },
+      question: `Wie bekomme ich mein Geld?`,
+      answer: `Sie wählen: Barzahlung bei Übergabe oder Überweisung. Wir stimmen das transparent mit Ihnen ab.`
+    }
+  ]
+
+  const features = [
+    { icon: <Zap className="w-12 h-12 text-orange-600" />, title: 'Express-Abwicklung', description: `Kurze Wege in ${city.name}: Anfrage → Angebot → Termin.` },
+    { icon: featureIcon('banknote'), title: 'Zahlung bei Übergabe', description: 'Bar oder Überweisung – Sie entscheiden.' },
+    { icon: featureIcon('shield'), title: 'Seriös & nachvollziehbar', description: 'Klare Kommunikation, keine versteckten Gebühren.' }
+  ]
+
+  const benefits = [
+    `Schnelles Angebot für ${city.name}`,
+    `Abholung in ${city.name} und Umgebung möglich`,
+    'Keine Inserate, keine Probefahrten, kein Stress',
+    'Transparente Bewertung statt pauschaler Abschläge',
+    'Unterstützung bei Abmeldung/Unterlagen'
   ]
 
   const relatedLinks = [
-    { href: "/auto-verkaufen-heute", label: "Auto heute verkaufen" },
-    { href: `/autoankauf/${citySlug}`, label: `Autoankauf in ${city.name}` },
-    { href: "/faelle", label: "Alle Verkaufsfälle" },
-    { href: "/#form", label: "Zum Formular (kostenloses Angebot)" },
+    { href: `/auto-verkaufen-heute/${cityKey}`, label: `Auto heute verkaufen in ${city.name}` },
+    { href: `/auto-verkaufen/ohne-tuev/${cityKey}`, label: `Ohne TÜV in ${city.name}` },
+    { href: `/auto-verkaufen/motorschaden/${cityKey}`, label: `Motorschaden in ${city.name}` },
+    { href: '/auto-verkaufen-sofort', label: 'Sofortverkauf (Allgemein)' },
+    { href: '/#form', label: 'Zum Formular' }
   ]
 
   return (
     <SEOPageTemplate
-      heroIcon={<Clock className="w-20 h-20 mx-auto" />}
+      heroIcon={<Zap className="w-20 h-20 mx-auto" />}
       heroTitle={`Auto sofort verkaufen in ${city.name}`}
-      heroSubtitle={`Schnell, fair, ohne Privatverkauf – direkt in ${city.name}.`}
-      mainTitle={`Sofort-Ankauf in ${city.name}: so klappt’s in wenigen Schritten`}
+      heroSubtitle={`Schnell verkaufen ohne Inserat – direkter Autoankauf in ${city.name} (${city.regionLabel}).`}
+      mainTitle={`Sofortverkauf in ${city.name}: so geht's`}
       mainContent={
         <>
           <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
-            Wenn es schnell gehen muss, ist Privatverkauf oft zu langsam.
-            Wir machen es planbar: Anfrage senden, Angebot erhalten, Übergabe organisieren.
+            Wenn Sie Ihr Auto in <strong>{city.name}</strong> sofort verkaufen möchten, zählt vor allem eins: ein klarer Ablauf.
+            Wir machen aus dem Privatverkauf (Termine, Probefahrten, Verhandlungen) eine strukturierte Abwicklung.
           </p>
           <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
-            In <strong>{city.name}</strong> profitieren Sie von kurzen Wegen – je nach Standort und Zustand ist auch Abholung möglich.
-          </p>
-          <p className="mt-4">
-            <Link className="text-orange-600 underline" href="/#form">Jetzt Anfrage senden</Link>
+            Anfrage senden, Angebot erhalten und Übergabe planen – in {city.name} sind kurze Wege möglich.
+            Nutzen Sie für die schnellste Rückmeldung direkt unser Formular.
           </p>
         </>
       }
       benefits={benefits}
-      features={features.map((f) => ({ icon: f.iconEl, title: f.title, description: f.description }))}
+      features={features}
       faqs={faqs}
-      ctaTitle="Jetzt sofort verkaufen – kostenlos anfragen"
-      ctaSubtitle={`Fahrzeugdaten senden – wir melden uns schnell. Region: ${city.name} & Umgebung.`}
+      ctaTitle={`Jetzt Angebot für ${city.name} anfordern`}
+      ctaSubtitle={`Fahrzeugdaten senden – wir melden uns schnell und koordinieren die Abholung in ${city.name}.`}
       relatedLinks={relatedLinks}
     />
   )
