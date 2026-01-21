@@ -268,10 +268,10 @@ export default function SEOPageTemplate({
             <div>
               <h3 className="font-bold mb-4">Zustand</h3>
               <ul className="space-y-2">
-                <li><Link href="/auto-verkaufen-ohne-tuev" className="hover:text-orange-400">Ohne TÜV</Link></li>
-                <li><Link href="/auto-verkaufen-mit-motorschaden" className="hover:text-orange-400">Mit Motorschaden</Link></li>
-                <li><Link href="/auto-verkaufen-unfallschaden" className="hover:text-orange-400">Unfallschaden</Link></li>
-                <li><Link href="/auto-verkaufen-defektes-auto" className="hover:text-orange-400">Defektes Auto</Link></li>
+                <li><Link href="/auto-verkaufen/ohne-tuev" className="hover:text-orange-400">Ohne TÜV</Link></li>
+                <li><Link href="/auto-verkaufen/mit-motorschaden" className="hover:text-orange-400">Mit Motorschaden</Link></li>
+                <li><Link href="/auto-verkaufen/unfallschaden" className="hover:text-orange-400">Unfallschaden</Link></li>
+                <li><Link href="/auto-verkaufen/defektes-auto" className="hover:text-orange-400">Defektes Auto</Link></li>
                 <li><Link href="/faelle" className="hover:text-orange-400">Alle Fälle</Link></li>
               </ul>
             </div>

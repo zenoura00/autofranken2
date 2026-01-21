@@ -52,8 +52,8 @@ export default function AutoVerkaufenHeutePage() {
 
   const relatedLinks = [
     { href: '/auto-verkaufen-sofort', label: 'Auto sofort verkaufen' },
-    { href: '/auto-verkaufen-ohne-tuev', label: 'Ohne TÜV verkaufen' },
-    { href: '/auto-verkaufen-mit-motorschaden', label: 'Mit Motorschaden verkaufen' },
+    { href: '/auto-verkaufen/ohne-tuev', label: 'Ohne TÜV verkaufen' },
+    { href: '/auto-verkaufen/mit-motorschaden', label: 'Mit Motorschaden verkaufen' },
     { href: '/staedte', label: 'Städte & Regionen' },
     { href: '/#form', label: 'Zum Formular' }
   ]
