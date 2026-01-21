@@ -10,37 +10,37 @@ const nextConfig = {
 
   // 🔁 Redirect legacy dash URLs to the canonical routes
   // Examples:
-  //   /auto-verkaufen/altes-auto  -> /auto-verkaufen/altes-auto
+  //   /auto-verkaufen-altes-auto  -> /auto-verkaufen/altes-auto
   //   /autoankauf-aalen           -> /autoankauf/aalen
   async redirects() {
     return [
       {
-        source: "/auto-verkaufen/bastlerfahrzeug",
+        source: "/auto-verkaufen-bastlerfahrzeug",
         destination: "/auto-verkaufen/bastlerfahrzeug",
         permanent: true,
       },
       {
-        source: "/auto-verkaufen/defektes-auto",
+        source: "/auto-verkaufen-defektes-auto",
         destination: "/faelle",
         permanent: true,
       },
       {
-        source: "/auto-verkaufen/export",
+        source: "/auto-verkaufen-export",
         destination: "/auto-verkaufen/exportfahrzeug",
         permanent: true,
       },
       {
-        source: "/auto-verkaufen/mit-motorschaden",
+        source: "/auto-verkaufen-mit-motorschaden",
         destination: "/auto-verkaufen/motorschaden",
         permanent: true,
       },
       {
-        source: "/auto-verkaufen/ohne-tuev",
+        source: "/auto-verkaufen-ohne-tuev",
         destination: "/auto-verkaufen/ohne-tuev",
         permanent: true,
       },
       {
-        source: "/auto-verkaufen/unfallschaden",
+        source: "/auto-verkaufen-unfallschaden",
         destination: "/auto-verkaufen/unfallschaden",
         permanent: true,
       },

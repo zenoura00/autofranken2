@@ -100,19 +100,19 @@ export const cities = [
 
 // SEO condition pages
 export const conditionPages = [
-  { slug: "auto-verkaufen/ohne-tuev", title: "Auto ohne TÜV verkaufen", keyword: "Auto verkaufen ohne TÜV" },
-  { slug: "auto-verkaufen/mit-motorschaden", title: "Auto mit Motorschaden verkaufen", keyword: "Auto mit Motorschaden verkaufen" },
-  { slug: "auto-verkaufen/mit-getriebeschaden", title: "Auto mit Getriebeschaden verkaufen", keyword: "Auto mit Getriebeschaden verkaufen" },
-  { slug: "auto-verkaufen/mit-unfallschaden", title: "Unfallwagen verkaufen", keyword: "Unfallwagen Ankauf" },
-  { slug: "auto-verkaufen/defektes-auto", title: "Defektes Auto verkaufen", keyword: "Defektes Auto verkaufen" },
-  { slug: "auto-verkaufen/altes-auto", title: "Altes Auto verkaufen", keyword: "Altes Auto verkaufen" },
-  { slug: "auto-verkaufen/abgemeldet", title: "Abgemeldetes Auto verkaufen", keyword: "Abgemeldetes Auto verkaufen" },
-  { slug: "auto-verkaufen/firmenwagen", title: "Firmenwagen verkaufen", keyword: "Firmenwagen verkaufen" },
-  { slug: "auto-verkaufen/leasing", title: "Leasing Auto verkaufen", keyword: "Leasing Auto verkaufen" },
-  { slug: "auto-verkaufen/export", title: "Auto Export verkaufen", keyword: "Auto Export verkaufen" },
-  { slug: "auto-verkaufen/bastlerfahrzeug", title: "Bastlerfahrzeug verkaufen", keyword: "Bastlerfahrzeug verkaufen" },
-  { slug: "auto-verkaufen/ohne-fahrzeugbrief", title: "Auto ohne Fahrzeugbrief verkaufen", keyword: "Auto ohne Brief verkaufen" },
-  { slug: "auto-verkaufen/diesel", title: "Diesel Auto verkaufen", keyword: "Diesel Auto verkaufen" },
-  { slug: "auto-verkaufen/elektroauto", title: "Elektroauto verkaufen", keyword: "Elektroauto verkaufen" },
+  { slug: "auto-verkaufen-ohne-tuev", title: "Auto ohne TÜV verkaufen", keyword: "Auto verkaufen ohne TÜV" },
+  { slug: "auto-verkaufen-mit-motorschaden", title: "Auto mit Motorschaden verkaufen", keyword: "Auto mit Motorschaden verkaufen" },
+  { slug: "auto-verkaufen-mit-getriebeschaden", title: "Auto mit Getriebeschaden verkaufen", keyword: "Auto mit Getriebeschaden verkaufen" },
+  { slug: "auto-verkaufen-mit-unfallschaden", title: "Unfallwagen verkaufen", keyword: "Unfallwagen Ankauf" },
+  { slug: "auto-verkaufen-defektes-auto", title: "Defektes Auto verkaufen", keyword: "Defektes Auto verkaufen" },
+  { slug: "auto-verkaufen-altes-auto", title: "Altes Auto verkaufen", keyword: "Altes Auto verkaufen" },
+  { slug: "auto-verkaufen-abgemeldet", title: "Abgemeldetes Auto verkaufen", keyword: "Abgemeldetes Auto verkaufen" },
+  { slug: "auto-verkaufen-firmenwagen", title: "Firmenwagen verkaufen", keyword: "Firmenwagen verkaufen" },
+  { slug: "auto-verkaufen-leasing", title: "Leasing Auto verkaufen", keyword: "Leasing Auto verkaufen" },
+  { slug: "auto-verkaufen-export", title: "Auto Export verkaufen", keyword: "Auto Export verkaufen" },
+  { slug: "auto-verkaufen-bastlerfahrzeug", title: "Bastlerfahrzeug verkaufen", keyword: "Bastlerfahrzeug verkaufen" },
+  { slug: "auto-verkaufen-ohne-fahrzeugbrief", title: "Auto ohne Fahrzeugbrief verkaufen", keyword: "Auto ohne Brief verkaufen" },
+  { slug: "auto-verkaufen-diesel", title: "Diesel Auto verkaufen", keyword: "Diesel Auto verkaufen" },
+  { slug: "auto-verkaufen-elektroauto", title: "Elektroauto verkaufen", keyword: "Elektroauto verkaufen" },
   { slug: "auto-verkaufen-sofort", title: "Auto sofort verkaufen", keyword: "Auto sofort verkaufen" }
 ]

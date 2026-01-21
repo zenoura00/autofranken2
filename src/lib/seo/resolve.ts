@@ -7,8 +7,8 @@ export type ResolvedPage =
 
 /**
  * Accepts:
- * - case page: /auto-verkaufen/ohne-tuev
- * - combo page: /auto-verkaufen/ohne-tuev-nuernberg
+ * - case page: /auto-verkaufen-ohne-tuev
+ * - combo page: /auto-verkaufen-ohne-tuev-nuernberg
  */
 export function resolveSlug(slug: string): ResolvedPage | null {
   if (CASE_BY_SLUG.has(slug)) return { kind: "case", caseSlug: slug }
