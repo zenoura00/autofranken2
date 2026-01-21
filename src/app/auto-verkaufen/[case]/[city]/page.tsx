@@ -26,9 +26,11 @@ export async function generateStaticParams() {
 
 type Params = { case: string; city: string }
 
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  const caseSlug = normalizeSlug(params.case)
-  const citySlug = normalizeSlug(params.city)
+export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
+  
+  const p = await params
+const caseSlug = normalizeSlug(p.case)
+  const citySlug = normalizeSlug(p.city)
   if (!isPSEOCaseKey(caseSlug) || !isPSEOCityKey(citySlug)) {
     return {
       title: "Seite nicht gefunden | Franken Auto Ankauf",
@@ -83,9 +85,11 @@ function featureIcon(name: "shield" | "clock" | "banknote") {
   return <Shield className="w-6 h-6" />
 }
 
-export default function Page({ params }: { params: Params }) {
-  const caseSlug = normalizeSlug(params.case)
-  const citySlug = normalizeSlug(params.city)
+export default async function Page({ params }: { params: Promise<Params> }) {
+  
+  const p = await params
+const caseSlug = normalizeSlug(p.case)
+  const citySlug = normalizeSlug(p.city)
 
   if (!isPSEOCaseKey(caseSlug) || !isPSEOCityKey(citySlug)) {
     notFound()

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
-import { pseoCases, type PSEOCaseKey } from './pseoCases'
-import { pseoCities, coreCityKeys, type PSEOCityKey } from './pseoCities'
+import { pseoCases, type PSEOCaseKey } from '@/lib/pseo/pseoCases'
+import { pseoCities, coreCityKeys, type PSEOCityKey } from '@/lib/pseo/pseoCities'
 
 export interface PSEOGeneratedPage {
   metadata: Metadata
@@ -41,12 +41,18 @@ function fmt(s: string, vars: Record<string, string>): string {
   return out
 }
 
-export function normalizeSlug(v: string): string {
-  // Normalize incoming dynamic route segments: handle encoded URLs, whitespace, and casing.
-  // This prevents false 404s for URLs like /Auto-verkaufen/Elektroauto
-  return decodeURIComponent(v || "")
+export function normalizeSlug(slug: string) {
+  // Be tolerant: handle encoded URLs and normalize common variants.
+  let s = slug
+  try { s = decodeURIComponent(s) } catch {}
+  return s
     .trim()
     .toLowerCase()
+    .replaceAll(' ', '-')
+    .replaceAll('ä', 'ae')
+    .replaceAll('ö', 'oe')
+    .replaceAll('ü', 'ue')
+    .replaceAll('ß', 'ss')
 }
 
 export function isPSEOCaseKey(v: string): v is PSEOCaseKey {

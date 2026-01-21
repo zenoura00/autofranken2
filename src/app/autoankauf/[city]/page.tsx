@@ -37,8 +37,10 @@ export async function generateStaticParams(): Promise<Params[]> {
   return (Object.keys(pseoCities) as PSEOCityKey[]).map((city) => ({ city }));
 }
 
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  const citySlug = normalizeSlug(params.city)
+export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
+  
+  const p = await params
+const citySlug = normalizeSlug(p.city)
   if (!isPSEOCityKey(citySlug)) {
     return { title: "Seite nicht gefunden | Franken Auto Ankauf", robots: { index: false, follow: false } };
   }
@@ -56,8 +58,10 @@ function featureIcon(name: "shield" | "clock" | "banknote") {
   return <Shield className="w-12 h-12 text-orange-600" />;
 }
 
-export default function CityPage({ params }: { params: Params }) {
-  const citySlug = normalizeSlug(params.city)
+export default async function CityPage({ params }: { params: Promise<Params> }) {
+  
+  const p = await params
+const citySlug = normalizeSlug(p.city)
   if (!isPSEOCityKey(citySlug)) {
     return (
       <div className="min-h-screen flex items-center justify-center p-8">
@@ -74,7 +78,7 @@ export default function CityPage({ params }: { params: Params }) {
     );
   }
 
-  const cityKey = params.city as PSEOCityKey;
+  const cityKey = p.city as PSEOCityKey;
   const city = pseoCities[cityKey];
   const seed = `city::${cityKey}`;
 

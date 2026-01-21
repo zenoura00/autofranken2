@@ -13,8 +13,10 @@ export async function generateStaticParams(): Promise<Params[]> {
   return (coreCityKeys as PSEOCityKey[]).map(city => ({ city }))
 }
 
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  const citySlug = normalizeSlug(params.city)
+export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
+  
+  const p = await params
+const citySlug = normalizeSlug(p.city)
   if (!isPSEOCityKey(citySlug)) {
     return { title: 'Seite nicht gefunden | Franken Auto Ankauf', robots: { index: false, follow: false } }
   }
@@ -31,8 +33,10 @@ function featureIcon(kind: 'shield' | 'clock' | 'banknote') {
   return <Shield className="w-12 h-12 text-orange-600" />
 }
 
-export default function AutoSofortCityPage({ params }: { params: Params }) {
-  const citySlug = normalizeSlug(params.city)
+export default async function AutoSofortCityPage({ params }: { params: Promise<Params> }) {
+  
+  const p = await params
+const citySlug = normalizeSlug(p.city)
   if (!isPSEOCityKey(citySlug)) {
     return (
       <div className="min-h-screen flex items-center justify-center p-8">
@@ -45,7 +49,7 @@ export default function AutoSofortCityPage({ params }: { params: Params }) {
     )
   }
 
-  const cityKey = params.city as PSEOCityKey
+  const cityKey = p.city as PSEOCityKey
   const city = pseoCities[cityKey]
 
   const faqs = [

@@ -15,8 +15,10 @@ export async function generateStaticParams(): Promise<Params[]> {
   return (Object.keys(pseoCases) as PSEOCaseKey[]).map(c => ({ case: c }))
 }
 
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  const caseSlug = normalizeSlug(params.case)
+export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
+  
+  const p = await params
+const caseSlug = normalizeSlug(p.case)
   if (!isPSEOCaseKey(caseSlug)) {
     return { title: 'Seite nicht gefunden | Franken Auto Ankauf', robots: { index: false, follow: false } }
   }
@@ -39,8 +41,10 @@ function featureIcon(name: 'shield' | 'clock' | 'banknote') {
   return <Shield className="w-12 h-12 text-orange-600" />
 }
 
-export default function CaseGeneralPage({ params }: { params: Params }) {
-  const caseSlug = normalizeSlug(params.case)
+export default async function CaseGeneralPage({ params }: { params: Promise<Params> }) {
+  
+  const p = await params
+const caseSlug = normalizeSlug(p.case)
   if (!isPSEOCaseKey(caseSlug)) {
     return (
       <div className="min-h-screen flex items-center justify-center p-8">
