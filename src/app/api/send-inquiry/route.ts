@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { put } from '@vercel/blob'
+import { saveLead } from '@/lib/leads'
 
 // Web3Forms Access Key
 const WEB3FORMS_ACCESS_KEY = process.env.WEB3FORMS_ACCESS_KEY || ''
@@ -81,6 +82,35 @@ export async function POST(request: NextRequest) {
         uploadError = err instanceof Error ? err.message : 'unknown upload error'
         console.error('❌ Blob upload failed:', uploadError)
       }
+    }
+
+    // Save lead locally
+    try {
+      saveLead({
+        timestamp: timestamp || new Date().toISOString(),
+        brand: brand || '',
+        model: model || '',
+        year: year || '',
+        mileage: mileage || '',
+        fuel: fuel || '',
+        priceExpectation: (formData.get('priceExpectation') as string) || '',
+        name: name || '',
+        email: email || '',
+        phone: phone || '',
+        location: location || '',
+        message: message || '',
+        page_url: page_url || '',
+        page_path: page_path || '',
+        referrer: referrer || '',
+        device_type: device_type || '',
+        lead_source_url: lead_source_url || '',
+        lead_source_path: lead_source_path || '',
+        click_source: click_source || '',
+        image_urls: imageUrls
+      })
+      console.log('✅ Lead lokal gespeichert')
+    } catch (err) {
+      console.error('❌ Lead konnte nicht gespeichert werden:', err)
     }
 
     // Log the inquiry

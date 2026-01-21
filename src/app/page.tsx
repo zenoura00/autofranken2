@@ -243,20 +243,7 @@ export default function Home() {
               </button>
             </div>
           </div>
-          {mobileMenuOpen && (
-            <nav className="lg:hidden mt-4 pb-4 border-t dark:border-gray-700 pt-4">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="block py-2 hover:text-orange-600"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-          )}
+
         </div>
       </header>
 
@@ -741,18 +728,7 @@ export default function Home() {
                 <a href="https://wa.me/4917632333561" className="text-green-400 hover:text-green-300">WhatsApp</a>
               </div>
             </div>
-            <div>
-              <h3 className="font-bold mb-4">Fahrzeugzustand</h3>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="/auto-verkaufen-ohne-tuev" className="hover:text-orange-400">Ohne TÜV verkaufen</Link></li>
-                <li><Link href="/auto-verkaufen-mit-motorschaden" className="hover:text-orange-400">Mit Motorschaden</Link></li>
-                <li><Link href="/auto-verkaufen-unfallschaden" className="hover:text-orange-400">Unfallwagen verkaufen</Link></li>
-                <li><Link href="/auto-verkaufen-defektes-auto" className="hover:text-orange-400">Defektes Auto</Link></li>
-                <li><Link href="/auto-verkaufen-bastlerfahrzeug" className="hover:text-orange-400">Bastlerfahrzeug</Link></li>
-                <li><Link href="/auto-verkaufen-export" className="hover:text-orange-400">Export Ankauf</Link></li>
-                <li><Link href="/auto-verkaufen-sofort" className="hover:text-orange-400">Sofort verkaufen</Link></li>
-              </ul>
-            </div>
+
             <div>
               <h3 className="font-bold mb-4">Städte</h3>
               <ul className="space-y-2 text-sm">
