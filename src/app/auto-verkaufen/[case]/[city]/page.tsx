@@ -84,12 +84,15 @@ function featureIcon(name: "shield" | "clock" | "banknote") {
 }
 
 export default function Page({ params }: { params: Params }) {
+  const caseSlug = normalizeSlug(params.case)
+  const citySlug = normalizeSlug(params.city)
+
   if (!isPSEOCaseKey(caseSlug) || !isPSEOCityKey(citySlug)) {
     notFound()
   }
 
-  const caseKey = params.case as PSEOCaseKey
-  const cityKey = params.city as PSEOCityKey
+  const caseKey = caseSlug as PSEOCaseKey
+  const cityKey = citySlug as PSEOCityKey
 
   const seo = generatePSEOPage(caseKey, cityKey)
 
