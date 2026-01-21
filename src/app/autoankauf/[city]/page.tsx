@@ -6,7 +6,7 @@ import { Banknote, Clock, MapPin, Shield } from "lucide-react";
 
 import { pseoCasesList, type PSEOCaseKey, pseoCases } from "@/lib/pseo/pseoCases";
 import { pseoCities, type PSEOCityKey } from "@/lib/pseo/pseoCities";
-import { isPSEOCityKey } from "@/lib/pseo/pseoGenerator";
+import { isPSEOCityKey, normalizeSlug } from "@/lib/pseo/pseoGenerator";
 
 export const revalidate = 1209600; // 14 days
 
@@ -38,14 +38,15 @@ export async function generateStaticParams(): Promise<Params[]> {
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  if (!isPSEOCityKey(params.city)) {
+  const citySlug = normalizeSlug(params.city)
+  if (!isPSEOCityKey(citySlug)) {
     return { title: "Seite nicht gefunden | Franken Auto Ankauf", robots: { index: false, follow: false } };
   }
-  const city = pseoCities[params.city];
+  const city = pseoCities[citySlug as any];
   return {
     title: `Autoankauf ${city.name} | Franken Auto Ankauf`,
     description: `Auto verkaufen in ${city.name} (${city.regionLabel}): kostenloses Angebot, schnelle Abwicklung, Abholung möglich. Jetzt anfragen.`,
-    alternates: { canonical: `https://frankenautoankauf.de/autoankauf/${params.city}` },
+    alternates: { canonical: `https://frankenautoankauf.de/autoankauf/${citySlug}` },
   };
 }
 
@@ -56,7 +57,8 @@ function featureIcon(name: "shield" | "clock" | "banknote") {
 }
 
 export default function CityPage({ params }: { params: Params }) {
-  if (!isPSEOCityKey(params.city)) {
+  const citySlug = normalizeSlug(params.city)
+  if (!isPSEOCityKey(citySlug)) {
     return (
       <div className="min-h-screen flex items-center justify-center p-8">
         <div className="max-w-lg text-center">

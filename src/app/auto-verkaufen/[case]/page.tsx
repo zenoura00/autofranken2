@@ -7,7 +7,7 @@ import { Shield, Settings, Car, Clock, Banknote } from 'lucide-react'
 
 import { pseoCases, type PSEOCaseKey } from '@/lib/pseo/pseoCases'
 import { pseoCities, coreCityKeys } from '@/lib/pseo/pseoCities'
-import { isPSEOCaseKey } from '@/lib/pseo/pseoGenerator'
+import { isPSEOCaseKey, normalizeSlug } from '@/lib/pseo/pseoGenerator'
 
 type Params = { case: string }
 
@@ -16,10 +16,11 @@ export async function generateStaticParams(): Promise<Params[]> {
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  if (!isPSEOCaseKey(params.case)) {
+  const caseSlug = normalizeSlug(params.case)
+  if (!isPSEOCaseKey(caseSlug)) {
     return { title: 'Seite nicht gefunden | Franken Auto Ankauf', robots: { index: false, follow: false } }
   }
-  const c = pseoCases[params.case]
+  const c = pseoCases[caseSlug as PSEOCaseKey]
   return {
     title: `${c.title} | Franken Auto Ankauf`,
     description: `${c.title}: kostenloses Angebot, transparente Bewertung, schnelle Abwicklung in Franken. Jetzt anfragen.`
@@ -39,7 +40,8 @@ function featureIcon(name: 'shield' | 'clock' | 'banknote') {
 }
 
 export default function CaseGeneralPage({ params }: { params: Params }) {
-  if (!isPSEOCaseKey(params.case)) {
+  const caseSlug = normalizeSlug(params.case)
+  if (!isPSEOCaseKey(caseSlug)) {
     return (
       <div className="min-h-screen flex items-center justify-center p-8">
         <div className="max-w-lg text-center">
@@ -51,7 +53,7 @@ export default function CaseGeneralPage({ params }: { params: Params }) {
     )
   }
 
-  const caseKey = params.case as PSEOCaseKey
+  const caseKey = caseSlug as PSEOCaseKey
   const c = pseoCases[caseKey]
 
   // Link targets: use core cities to keep pages stable

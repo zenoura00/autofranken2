@@ -7,7 +7,7 @@ import { Banknote, Clock, Shield, Settings, Car } from "lucide-react"
 import { caseKeys, cityKeysCore } from "@/lib/pseo/sitemapData"
 import { type PSEOCaseKey } from "@/lib/pseo/pseoCases"
 import { type PSEOCityKey } from "@/lib/pseo/pseoCities"
-import { generatePSEOPage, isPSEOCaseKey, isPSEOCityKey } from "@/lib/pseo/pseoGenerator"
+import { generatePSEOPage, isPSEOCaseKey, isPSEOCityKey, normalizeSlug } from "@/lib/pseo/pseoGenerator"
 
 export const revalidate = 1209600
 
@@ -27,15 +27,17 @@ export async function generateStaticParams() {
 type Params = { case: string; city: string }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  if (!isPSEOCaseKey(params.case) || !isPSEOCityKey(params.city)) {
+  const caseSlug = normalizeSlug(params.case)
+  const citySlug = normalizeSlug(params.city)
+  if (!isPSEOCaseKey(caseSlug) || !isPSEOCityKey(citySlug)) {
     return {
       title: "Seite nicht gefunden | Franken Auto Ankauf",
       robots: { index: false, follow: false },
     }
   }
 
-  const seo = generatePSEOPage(params.case, params.city)
-  const canonicalUrl = `https://frankenautoankauf.de/auto-verkaufen/${params.case}/${params.city}`
+  const seo = generatePSEOPage(caseSlug as PSEOCaseKey, citySlug as PSEOCityKey)
+  const canonicalUrl = `https://frankenautoankauf.de/auto-verkaufen/${caseSlug}/${citySlug}`
   const ogTitle = seo.metadata.title ?? undefined
   const ogDescription = seo.metadata.description ?? undefined
 
@@ -82,7 +84,7 @@ function featureIcon(name: "shield" | "clock" | "banknote") {
 }
 
 export default function Page({ params }: { params: Params }) {
-  if (!isPSEOCaseKey(params.case) || !isPSEOCityKey(params.city)) {
+  if (!isPSEOCaseKey(caseSlug) || !isPSEOCityKey(citySlug)) {
     notFound()
   }
 

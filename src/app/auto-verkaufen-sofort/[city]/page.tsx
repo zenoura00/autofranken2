@@ -5,7 +5,7 @@ import { Zap, Clock, Shield, Banknote } from 'lucide-react'
 import Link from 'next/link'
 
 import { pseoCities, coreCityKeys, type PSEOCityKey } from '@/lib/pseo/pseoCities'
-import { isPSEOCityKey } from '@/lib/pseo/pseoGenerator'
+import { isPSEOCityKey, normalizeSlug } from '@/lib/pseo/pseoGenerator'
 
 type Params = { city: string }
 
@@ -14,10 +14,11 @@ export async function generateStaticParams(): Promise<Params[]> {
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  if (!isPSEOCityKey(params.city)) {
+  const citySlug = normalizeSlug(params.city)
+  if (!isPSEOCityKey(citySlug)) {
     return { title: 'Seite nicht gefunden | Franken Auto Ankauf', robots: { index: false, follow: false } }
   }
-  const city = pseoCities[params.city]
+  const city = pseoCities[citySlug as any]
   return {
     title: `Auto sofort verkaufen in ${city.name} | Heute noch Abschluss`,
     description: `Auto sofort verkaufen in ${city.name} (${city.regionLabel}): schnelles Angebot, zügige Abwicklung, Abholung möglich. Jetzt kostenlos anfragen.`
@@ -31,7 +32,8 @@ function featureIcon(kind: 'shield' | 'clock' | 'banknote') {
 }
 
 export default function AutoSofortCityPage({ params }: { params: Params }) {
-  if (!isPSEOCityKey(params.city)) {
+  const citySlug = normalizeSlug(params.city)
+  if (!isPSEOCityKey(citySlug)) {
     return (
       <div className="min-h-screen flex items-center justify-center p-8">
         <div className="max-w-lg text-center">

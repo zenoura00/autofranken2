@@ -41,14 +41,22 @@ function fmt(s: string, vars: Record<string, string>): string {
   return out
 }
 
+export function normalizeSlug(v: string): string {
+  // Normalize incoming dynamic route segments: handle encoded URLs, whitespace, and casing.
+  // This prevents false 404s for URLs like /Auto-verkaufen/Elektroauto
+  return decodeURIComponent(v || "")
+    .trim()
+    .toLowerCase()
+}
+
 export function isPSEOCaseKey(v: string): v is PSEOCaseKey {
-  return Object.prototype.hasOwnProperty.call(pseoCases, v)
+  const k = normalizeSlug(v)
+  return Object.prototype.hasOwnProperty.call(pseoCases, k)
 }
-
 export function isPSEOCityKey(v: string): v is PSEOCityKey {
-  return Object.prototype.hasOwnProperty.call(pseoCities, v)
+  const k = normalizeSlug(v)
+  return Object.prototype.hasOwnProperty.call(pseoCities, k)
 }
-
 type Pools = {
   h1Variants: string[]
   introPool: string[]
